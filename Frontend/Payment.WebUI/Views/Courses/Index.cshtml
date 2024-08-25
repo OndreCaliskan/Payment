@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="courses-page">
+  <main class="main">
+
+        @await Component.InvokeAsync("_CoursesPageTitlePartial")
+
+        @await Component.InvokeAsync("_CoursesSectionPartial")
+
+  </main>
+
+</body>
+
+</html>

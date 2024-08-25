@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="contact-page">
+
+        @await Component.InvokeAsync("_ContactPageTitlePartial")
+
+        @await Component.InvokeAsync("_ContactSectionPartial")
+
+
+</body>
+
+</html>
