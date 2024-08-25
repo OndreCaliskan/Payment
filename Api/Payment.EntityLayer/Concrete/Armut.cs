@@ -10,5 +10,6 @@ namespace Payment.EntityLayer.Concrete
     {
         public int ArmutID { get; set; }
 
+
     }
 }
