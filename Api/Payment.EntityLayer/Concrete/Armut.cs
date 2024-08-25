@@ -9,6 +9,6 @@ namespace Payment.EntityLayer.Concrete
     public class Armut
     {
         public int ArmutID { get; set; }
-
+        public string Name { get; set; }
     }
 }
