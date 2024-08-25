@@ -1,30 +1,27 @@
-﻿
+﻿@model CreateCategoryDto
 @{
     ViewData["Title"] = "AddCategory";
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
 }
 
-<form asp-action="AddCategory" method="post">
+<form asp-action="AddCategory" method="post" enctype="multipart/form-data">
     <label>Kategori Adı</label>
-    <input type="text" asp-fo="Name" class="form-control" />
+    <input type="text" asp-for="Name" class="form-control" />
     <br />
     <label>Açıklama</label>
-    <input type="text" asp-fo="Title" class="form-control" />
+    <input type="text" asp-for="Description" class="form-control" />
     <br />
     <label>Aktif Mi</label>
-    <input type="text" asp-fo="SocialMedia1" class="form-control" />
-    <br />
-    <label>Ekleme Tarihi</label>
-    <input type="text" asp-fo="SocialMedia2" class="form-control" />
-    <br />
-    <label>Güncellenme Tarihi</label>
-    <input type="text" asp-fo="SocialMedia3" class="form-control" />
+    <input type="text" asp-for="IsActive" class="form-control" />
     <br />
     <label>Fotoğraf</label>
-    <input type="text" asp-fo="SocialMedia3" class="form-control" />
+    <input type="file" asp-for="File" class="form-control" />
     <br />
-    <label>Kullanıcı</label>
-    <input type="text" asp-fo="SocialMedia3" class="form-control" />
+    <label>Ekleyen Kullanıcı</label>
+    <input type="text" asp-for="CreateUser" class="form-control" />
+    <br />
+    <label>Güncelleyen Kullanıcı</label>
+    <input type="text" asp-for="UpdateUser" class="form-control" />
     <br />
     <button class="btn btn-primary">Kategori Ekle</button>
 </form>
