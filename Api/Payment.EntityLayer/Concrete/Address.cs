@@ -7,6 +7,10 @@ public class Address
     public string City { get; set; }
     public string Country { get; set; }
     public string PostalCode { get; set; }
+    public DateTime CreateTime { get; set; }
+    public DateTime UpdateTime { get; set; }
+    public string CreateUser { get; set; }
+    public string UpdateUser { get; set; }
     public string UserId { get; set; }
     public AppUser AppUser { get; set; }
 }
