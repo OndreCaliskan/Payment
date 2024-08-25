@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "UpdateProduct";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<form asp-action="UpdateProduct" method="post">
+    <input type="hidden" asp-fo="ProductId" />
+    <label>Ürün Adı</label>
+    <input type="text" asp-fo="Name" class="form-control" />
+    <br />
+    <label>Stok</label>
+    <input type="text" asp-fo="Title" class="form-control" />
+    <br />
+    <label>Fiyat</label>
+    <input type="text" asp-fo="SocialMedia1" class="form-control" />
+    <br />
+    <label>Fotoğraf</label>
+    <input type="text" asp-fo="SocialMedia2" class="form-control" />
+    <br />
+    <label>Açıklama</label>
+    <input type="text" asp-fo="SocialMedia3" class="form-control" />
+    <br />
+    <button class="btn btn-primary">Ürün Güncelle</button>
+</form>

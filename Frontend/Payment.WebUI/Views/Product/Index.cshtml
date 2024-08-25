@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<table class="table table-border">
+<tr>
+    <th>#</th>
+    <th>Ürün Adı</th>
+    <th>Ürün Fiyat</th>
+    <th>Sil</th>
+    <th>Güncele</th>
+    <th>Detaylar</th>
+</tr>
+
+    <tr>
+        <th>1</th>
+        <td>Kurs</td>
+        <td>459 </td>
+        <td><a href="/Staff/DeleteStaff/item.ProductId" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
+        <td><a href="/Staff/UpdateStaff/item.ProductId" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
+        <td><a href="#" class="btn mb-1 btn-rounded btn-outline-dark">Detaylar</a></td>
+    </tr>
+
+</table>
+<a href="/Product/AddProduct/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Ürün Girişi</a>
