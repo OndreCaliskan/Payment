@@ -11,5 +11,6 @@ namespace Payment.EntityLayer.Concrete
         public int ArmutID { get; set; }
         public string Name { get; set; }
         public int count { get; set; }
+        public decimal price { get; set; }
     }
 }
