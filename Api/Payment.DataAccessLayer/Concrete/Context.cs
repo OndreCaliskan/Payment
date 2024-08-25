@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Payment.EntityLayer.Concrete;
 
 namespace Payment.DataAccessLayer.Concrete
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext<AppUser,AppRole,int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -11,5 +12,6 @@ namespace Payment.DataAccessLayer.Concrete
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }
