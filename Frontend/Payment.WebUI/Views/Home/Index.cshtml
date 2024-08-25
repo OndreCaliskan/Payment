@@ -1,8 +1,27 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/_Layout.cshtml";
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<body class="index-page">
+
+    @await Component.InvokeAsync("_HomeHeroPartial")
+
+    @await Component.InvokeAsync("_HomeAboutPartial")
+
+    @await Component.InvokeAsync("_HomeCountsPartial")
+
+    @await Component.InvokeAsync("_HomeWhyUsPartial")
+
+    @await Component.InvokeAsync("_HomeFeaturesPartial")
+
+    @await Component.InvokeAsync("_HomeCoursesPartial")
+
+    @await Component.InvokeAsync("_HomeTrainersPartial")
+
+</body>
+
+</html>

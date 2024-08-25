@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "CoursesDetails";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body class="course-details-page">
+  <main class="main">
+
+        @await Component.InvokeAsync("_CoursesDetailsPageTitlePartial")
+
+        @await Component.InvokeAsync("_CoursesDetailsCoursePartial")
+
+        @await Component.InvokeAsync("_CoursesDetailsTabsPartial")
+
+  </main>
+
+</body>
+
+</html>
+

@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="about-page">
+
+
+    <main class="main">
+        @await Component.InvokeAsync("_AboutPageTitlePartial")
+
+        @await Component.InvokeAsync("_AboutUsSectionPartial")
+
+        @await Component.InvokeAsync("_AboutCountsPartial")
+
+        @await Component.InvokeAsync("_AboutTestimonialsPartial")
+
+    </main>
+
+</body>
+
+</html>
