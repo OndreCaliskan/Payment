@@ -5,21 +5,19 @@ VisualStudioVersion = 17.10.35201.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{B6D551FE-DACC-49D1-A8A2-2756308A9DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.EntityLayer", "Api\Payment.EntityLayer\Payment.EntityLayer.csproj", "{C1DEB1E3-86E7-402E-9320-9699291292EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.EntityLayer", "Api\Payment.EntityLayer\Payment.EntityLayer.csproj", "{C1DEB1E3-86E7-402E-9320-9699291292EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.DtoLayer", "Api\Payment.DtoLayer\Payment.DtoLayer.csproj", "{D147B581-B22B-410B-8B5E-B909447F2EFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.DtoLayer", "Api\Payment.DtoLayer\Payment.DtoLayer.csproj", "{D147B581-B22B-410B-8B5E-B909447F2EFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.BusinessLayer", "Api\Payment.BusinessLayer\Payment.BusinessLayer.csproj", "{FFDDD2C9-81D1-4713-8E10-32E2C5F0230E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.BusinessLayer", "Api\Payment.BusinessLayer\Payment.BusinessLayer.csproj", "{FFDDD2C9-81D1-4713-8E10-32E2C5F0230E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.WebApi", "Api\Payment.WebApi\Payment.WebApi.csproj", "{F027F222-9415-4E5B-A2FB-A68846065180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.WebApi", "Api\Payment.WebApi\Payment.WebApi.csproj", "{F027F222-9415-4E5B-A2FB-A68846065180}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{E468D820-E294-442E-AE9F-CB711DEDAEA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.DataAccessLayer", "Api\Payment.DataAccessLayer\Payment.DataAccessLayer.csproj", "{83DD9BF9-3EC0-4B86-9BED-86AE2453C2BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.DataAccessLayer", "Api\Payment.DataAccessLayer\Payment.DataAccessLayer.csproj", "{83DD9BF9-3EC0-4B86-9BED-86AE2453C2BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.IdentityServer", "Api\Payment.IdentityServer\Payment.IdentityServer.csproj", "{EDB71E7E-2CF5-4BB3-820F-7EC3F7451A01}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.WebUI", "Frontend\Payment.WebUI\Payment.WebUI.csproj", "{3CA983D8-0164-47A7-9688-DDBC53A5AED2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.WebUI", "Frontend\Payment.WebUI\Payment.WebUI.csproj", "{3CA983D8-0164-47A7-9688-DDBC53A5AED2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +45,6 @@ Global
 		{83DD9BF9-3EC0-4B86-9BED-86AE2453C2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83DD9BF9-3EC0-4B86-9BED-86AE2453C2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83DD9BF9-3EC0-4B86-9BED-86AE2453C2BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDB71E7E-2CF5-4BB3-820F-7EC3F7451A01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDB71E7E-2CF5-4BB3-820F-7EC3F7451A01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDB71E7E-2CF5-4BB3-820F-7EC3F7451A01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDB71E7E-2CF5-4BB3-820F-7EC3F7451A01}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CA983D8-0164-47A7-9688-DDBC53A5AED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3CA983D8-0164-47A7-9688-DDBC53A5AED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CA983D8-0164-47A7-9688-DDBC53A5AED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,7 +59,6 @@ Global
 		{FFDDD2C9-81D1-4713-8E10-32E2C5F0230E} = {B6D551FE-DACC-49D1-A8A2-2756308A9DF8}
 		{F027F222-9415-4E5B-A2FB-A68846065180} = {B6D551FE-DACC-49D1-A8A2-2756308A9DF8}
 		{83DD9BF9-3EC0-4B86-9BED-86AE2453C2BD} = {B6D551FE-DACC-49D1-A8A2-2756308A9DF8}
-		{EDB71E7E-2CF5-4BB3-820F-7EC3F7451A01} = {B6D551FE-DACC-49D1-A8A2-2756308A9DF8}
 		{3CA983D8-0164-47A7-9688-DDBC53A5AED2} = {E468D820-E294-442E-AE9F-CB711DEDAEA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
