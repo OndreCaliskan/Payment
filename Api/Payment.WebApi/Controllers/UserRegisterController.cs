@@ -30,6 +30,7 @@ namespace Payment.WebApi.Controllers
                 Surname = registerDto.Surname,
                 PhoneNumber = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
+                
 
             };
 
