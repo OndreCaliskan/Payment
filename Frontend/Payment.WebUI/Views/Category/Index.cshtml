@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<table class="table table-border">
+    <tr>
+        <th>#</th>
+        <th>Kategori Adı</th>
+        <th>Açıklama</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Güncelleme Tarihi</th>
+        <th>Aktif Mi</th>
+        <th>Fotoğraf</th>
+        <th>Kullanıcı</th>
+        <th>Sil</th>
+        <th>Güncele</th>
+    </tr>
+
+    <tr>
+        <th>1</th>
+        <td>Parfüm </td>
+        <td>Eşsiz Koku </td>
+        <td>23/08/2024 </td>
+        <td>25/08/2024 </td>
+        <td>Aktif </td>
+        <td>parfum.png </td>
+        <td>Ünal Kaya </td>
+        <td><a href="/Category/DeleteCategory/item.ID" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
+        <td><a href="/Category/UpdateCategory/item.ID" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
+    </tr>
+
+</table>
+<a href="/Category/AddCategory/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Kategori Girişi</a>
