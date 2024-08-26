@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Payment.WebUI.Models.Mail;
+using Payment.BusinessLayer.Abstract;
+using Payment.BusinessLayer.Concrete;
+using Payment.DataAccessLayer.Abstract;
+using Payment.DataAccessLayer.EntityFramework;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +23,15 @@ builder.Services.AddScoped<Payment.WebUI.Models.Mail.IEmailSender, SmtpEmailSend
         builder.Configuration["EmailSender:Username"],
         builder.Configuration["EmailSender:Password"])
 );
+
+builder.Services.AddScoped<ICategoryDal, EfCategoryDal>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
+
+builder.Services.AddScoped<IProductDal, EfProductDal>();
+builder.Services.AddScoped<IProductService, ProductManager>();
+
+builder.Services.AddControllers().AddXmlSerializerFormatters();
+
 
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();

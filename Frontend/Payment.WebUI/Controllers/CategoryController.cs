@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Payment.BusinessLayer.Abstract;
-using Payment.BusinessLayer.Concrete;
 using Payment.WebUI.DTOs.CategoryDtos;
 using System.Text;
 
