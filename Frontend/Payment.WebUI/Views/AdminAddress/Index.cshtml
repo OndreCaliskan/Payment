@@ -1,0 +1,39 @@
+﻿@model List<AddressWithUsernameDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Adres</th>
+        <th>Şehir </th>
+        <th>Ülke </th>
+        <th>Posta Kodu </th>
+        <th>Oluşturulma Zamanı </th>
+        <th>Güncellenme Zamanı </th>
+        <th>Kullanıcı Adı Soyadı </th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+        <th>Detaylar</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>@item.AddressID</th>
+            <td>@item.AddressLine</td>
+            <td>@item.City</td>
+            <td>@item.Country</td>
+            <td>@item.PostalCode</td>
+            <td>@item.CreateTime</td>
+            <td>@item.UpdateTime</td>
+            <td>@item.UserName</td>
+            <td><a href="/AdminAddress/DeleteAddress/@item.AddressID" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
+            <td><a href="/AdminAddress/UpdateAddress/@item.AddressID" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
+            <td><a href="#" class="btn mb-1 btn-rounded btn-outline-dark">Detaylar</a></td>
+        </tr>
+    }
+</table>
+<a href="/AdminAddress/CreateAddress/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Address Girişi</a>

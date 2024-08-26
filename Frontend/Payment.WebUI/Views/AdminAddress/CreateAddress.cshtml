@@ -1,0 +1,32 @@
+﻿@model CreateAddressDto
+@{
+    ViewData["Title"] = "CreateAddress";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Address Ekleme Sayfası</h1>
+
+<form method="post">
+    <label>Adres</label>
+    <input type="text" asp-for="AddressLine" class="form-control" />
+    <br />
+    <label>Şehir</label>
+    <input type="text" asp-for="City" class="form-control" />
+    <br />
+    <label>Ülke</label>
+    <input type="text" asp-for="Country" class="form-control" />
+    <br />
+    <label>Posta Kodu</label>
+    <input type="text" asp-for="PostalCode" class="form-control" />
+    <br />
+    <label>Oluşturan Kullanıcı</label>
+    <input type="text" asp-for="CreateUser" class="form-control" />
+    <br />
+    <label>Güncelleyen Kullanıcı</label>
+    <input type="text" asp-for="UpdateUser" class="form-control" />
+    <br />
+    <label>Kullanıcı ID</label>
+    <input type="text" asp-for="AppUserId" class="form-control" />
+    <br />
+    <button class="btn btn-primary">Adresi Ekle</button>
+</form>

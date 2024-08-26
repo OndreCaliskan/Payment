@@ -11,6 +11,6 @@ public class Address
     public DateTime UpdateTime { get; set; }
     public string CreateUser { get; set; }
     public string UpdateUser { get; set; }
-    public string UserId { get; set; }
+    public int AppUserId { get; set; }
     public AppUser AppUser { get; set; }
 }

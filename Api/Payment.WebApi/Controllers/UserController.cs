@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Payment.DtoLayer.Dtos.AppUserDtos;
 
 namespace Payment.WebApi.Controllers
@@ -35,6 +36,13 @@ namespace Payment.WebApi.Controllers
             };
             return Ok(value);
         }
+
+        [HttpGet("GetUserList")]
+        public async Task<IActionResult> GetUserList()
+        {
+            var values = await _userManager.Users.ToListAsync();
+            return Ok(values);
+        }
         [HttpGet("GetUserID")]
         public async Task<IActionResult> GetUserID()
         {
@@ -42,6 +50,17 @@ namespace Payment.WebApi.Controllers
             if (user == null)
                 return NotFound("User not found");
             return Ok(user.Id);
+        }
+
+        [HttpGet("GetUserRoles")]
+        public async Task<IActionResult> GetUserRoles(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+                return NotFound("User not found");
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return Ok(roles);
         }
 
         [HttpPut]

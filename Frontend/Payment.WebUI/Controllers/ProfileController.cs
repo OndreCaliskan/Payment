@@ -47,7 +47,9 @@ namespace Payment.WebUI.Controllers
             StringContent content = new StringContent(JsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PutAsync("https://localhost:7066/api/User", content);
             if (responseMessage.IsSuccessStatusCode)
+            {
                 return RedirectToAction("Index");
+            }
             return View();
         }
 
