@@ -4,7 +4,7 @@
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
 }
 
-<form asp-action="UpdateCategory" method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" class="form-controller" />
     <label>Kategori Adı</label>
     <input type="text" asp-for="Name" class="form-control" />
