@@ -30,8 +30,10 @@ namespace Payment.WebApi.Controllers
                 Surname = registerDto.Surname,
                 PhoneNumber = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
-                
-
+                CreateTime = DateTime.Now,
+                UpdateTime = DateTime.Now,
+                CreateUser = registerDto.Username,
+                UpdateUser = registerDto.Username
             };
 
             if (registerDto.Password != registerDto.ConfirmPassword)

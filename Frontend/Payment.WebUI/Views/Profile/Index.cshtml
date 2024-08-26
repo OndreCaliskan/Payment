@@ -1,0 +1,30 @@
+﻿@model ResultAppUserDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+    int id = ViewBag.UserID;
+}
+
+
+<form method="post">
+    <input type="hidden" asp-for="@id" />
+    <label>UserName</label>
+    <input type="text" asp-for="UserName" class="form-control" />
+    <br />
+    <label>Email</label>
+    <input type="text" asp-for="Email" class="form-control" />
+    <br />
+    <label>Name</label>
+    <input type="text" asp-for="Name" class="form-control" />
+    <br />
+    <label>Surname</label>
+    <input type="text" asp-for="Surname" class="form-control" />
+    <br />
+    <label>Phone</label>
+    <input type="text" asp-for="Phone" class="form-control" />
+    <br />
+    <label>CreateTime</label>
+    <input type="text" asp-for="CreateTime" class="form-control" />
+    <br />
+    <button class="btn btn-primary">Profili Güncelle</button>
+</form>
