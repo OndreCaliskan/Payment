@@ -32,6 +32,8 @@ namespace Payment.WebUI.Controllers
             {
                 var content = await responseMessage1.Content.ReadAsStringAsync();
                 var profile = JsonConvert.DeserializeObject<ResultAppUserDto>(content);
+                profile.UpdateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
+                profile.CreateTime = DateTime.Parse(profile.CreateTime.ToShortDateString());
                 return View(profile);
             }
             return View();
