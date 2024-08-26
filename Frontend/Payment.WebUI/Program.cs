@@ -20,9 +20,8 @@ builder.Services.AddScoped<Payment.WebUI.Models.Mail.IEmailSender, SmtpEmailSend
         builder.Configuration["EmailSender:Password"])
 );
 
-
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
-
+builder.Services.AddDbContext<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddHttpClient();
