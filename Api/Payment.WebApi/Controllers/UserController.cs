@@ -29,9 +29,19 @@ namespace Payment.WebApi.Controllers
                 UserName = user.UserName,
                 Email = user.Email,
                 Name = user.Name,
-                Surname = user.Surname
+                Surname = user.Surname,
+                Phone = user.PhoneNumber,
+                CreateTime = user.CreateTime
             };
             return Ok(value);
+        }
+        [HttpGet("GetUserID")]
+        public async Task<IActionResult> GetUserID()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound("User not found");
+            return Ok(user.Id);
         }
 
         [HttpPut]
@@ -48,6 +58,8 @@ namespace Payment.WebApi.Controllers
             user.Email = updateUserDto.Email;
             user.Name = updateUserDto.Name;
             user.Surname = updateUserDto.Surname;
+            user.PhoneNumber = updateUserDto.Phone;
+            user.UpdateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
