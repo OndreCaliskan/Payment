@@ -8,5 +8,6 @@
         public string Surname { get; set; }
         public string Phone { get; set; }
         public DateTime CreateTime { get; set; }
+        public DateTime UpdateTime { get; set; }
     }
 }

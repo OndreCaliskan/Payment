@@ -24,7 +24,7 @@ namespace Payment.WebApi.Controllers
             if (user == null)
                 return NotFound("User not found");
 
-            var value = new ResultUserDto
+            var value = new ResultAppUserDto
             {
                 UserName = user.UserName,
                 Email = user.Email,

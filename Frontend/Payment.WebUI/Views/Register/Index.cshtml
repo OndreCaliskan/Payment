@@ -66,22 +66,22 @@
                                         <span asp-validation-for="Email" class="text-warning"></span>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Şifreniz" asp-for="Password">
-                                        <span asp-validation-for="Password" class="text-warning"></span>
-                                    </div>
-                                    <div class="form-group">
                                         <input type="text" class="form-control" placeholder="Telefon Numaranız" asp-for="PhoneNumber">
                                         <span asp-validation-for="PhoneNumber" class="text-warning"></span>
                                     </div>
-
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Gender" asp-for="Gender">
+                                        <select class="form-control" asp-for="Gender">
+                                            <option value="">Cinsiyet Seçin</option>
+                                            <option value="Erkek">Erkek</option>
+                                            <option value="Kadın">Kadın</option>
+                                            <option value="Belirtmek İstemiyorum">Belirtmek İstemiyorum</option>
+                                        </select>
                                         <span asp-validation-for="Gender" class="text-warning"></span>
                                     </div>
-
-
-
-
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Şifreniz" asp-for="Password">
+                                        <span asp-validation-for="Password" class="text-warning"></span>
+                                    </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control" placeholder="Şifrenizi Tekrar Giriniz" asp-for="ConfirmPassword">
                                         <span asp-validation-for="ConfirmPassword" class="text-warning"></span>
