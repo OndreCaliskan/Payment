@@ -1,0 +1,27 @@
+﻿@model CreateCategoryDto
+@{
+    ViewData["Title"] = "AddCategory";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<form asp-action="AddCategory" method="post" enctype="multipart/form-data">
+    <label>Kategori Adı</label>
+    <input type="text" asp-for="Name" class="form-control" />
+    <br />
+    <label>Açıklama</label>
+    <input type="text" asp-for="Description" class="form-control" />
+    <br />
+    <label>Aktif Mi</label>
+    <input type="text" asp-for="IsActive" class="form-control" />
+    <br />
+    <label>Fotoğraf</label>
+    <input type="file" asp-for="File" class="form-control" />
+    <br />
+    <label>Ekleyen Kullanıcı</label>
+    <input type="text" asp-for="CreateUser" class="form-control" />
+    <br />
+    <label>Güncelleyen Kullanıcı</label>
+    <input type="text" asp-for="UpdateUser" class="form-control" />
+    <br />
+    <button class="btn btn-primary">Kategori Ekle</button>
+</form>

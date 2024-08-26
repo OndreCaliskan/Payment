@@ -23,6 +23,11 @@ builder.Services.AddScoped<Payment.WebUI.Models.Mail.IEmailSender, SmtpEmailSend
 
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddHttpClient();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

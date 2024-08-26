@@ -1,0 +1,40 @@
+﻿@model List<ResultCategoryDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<table class="table table-border">
+    <tr>
+        <th>#</th>
+        <th>Kategori Adı</th>
+        <th>Açıklama</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Güncelleme Tarihi</th>
+        <th>Aktif Mi</th>
+        <th>Fotoğraf</th>
+        <th>Ekleyen Kullanıcı</th>
+        <th>Güncelleyen Kullanıcı</th>
+        <th>Sil</th>
+        <th>Güncele</th>
+    </tr>
+
+    @foreach(var item in Model)
+    {
+        <tr>
+            <th>@item.Id</th>
+            <td>@item.Name </td>
+            <td>@item.Description </td>
+            <td>@item.CreateTime </td>
+            <td>@item.UpdateTime </td>
+            <td>@item.IsActive</td>
+            <td><img src="@item.ImagePath" alt="Ürün Image" width="100" /></td>
+            <td>@item.CreateUser </td>
+            <td>@item.UpdateUser </td>
+            <td><a href="/Category/DeleteCategory/@item.Id" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
+            <td><a href="/Category/UpdateCategory/@item.Id" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
+        </tr>
+    }
+
+</table>
+<a href="/Category/AddCategory/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Kategori Girişi</a>

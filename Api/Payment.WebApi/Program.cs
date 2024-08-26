@@ -12,6 +12,17 @@ builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Contex
 builder.Services.AddScoped<ICategoryDal, EfCategoryDal>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 
+builder.Services.AddScoped<IProductDal, EfProductDal>();
+builder.Services.AddScoped<IProductService, ProductManager>();
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("PaymentApiCors", opts =>
+    {
+        opts.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,7 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("PaymentApiCors");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
