@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Payment.EntityLayer.Concrete;
 using Payment.WebUI.DTOs.CategoryDtos;
+using Payment.WebUI.DTOs.ProductDtos;
 
 namespace Payment.WebUI.Mapping
 {
@@ -11,8 +12,9 @@ namespace Payment.WebUI.Mapping
             CreateMap<ResultCategoryDto, Category>().ReverseMap();
             CreateMap<UpdateCategoryDto, Category>().ReverseMap();
             CreateMap<CreateCategoryDto, Category>().ReverseMap();
-
-
+            CreateMap<CreateProductDto, Product>().ReverseMap();
+            CreateMap<ResultProductDto, Product>().ReverseMap();
+            CreateMap<UpdateProductDto, Product>().ReverseMap();
 
         }
     }

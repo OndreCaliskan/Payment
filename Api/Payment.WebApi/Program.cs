@@ -12,6 +12,9 @@ builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Contex
 builder.Services.AddScoped<ICategoryDal, EfCategoryDal>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 
+builder.Services.AddScoped<IProductDal, EfProductDal>();
+builder.Services.AddScoped<IProductService, ProductManager>();
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("PaymentApiCors", opts =>
