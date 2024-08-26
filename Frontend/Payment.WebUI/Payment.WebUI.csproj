@@ -10,4 +10,13 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Api\Payment.BusinessLayer\Payment.BusinessLayer.csproj" />
+    <ProjectReference Include="..\..\Api\Payment.DataAccessLayer\Payment.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\..\Api\Payment.DtoLayer\Payment.DtoLayer.csproj" />
+    <ProjectReference Include="..\..\Api\Payment.EntityLayer\Payment.EntityLayer.csproj" />
+    <ProjectReference Include="..\..\Api\Payment.IdentityServer\Payment.IdentityServer.csproj" />
+    <ProjectReference Include="..\..\Api\Payment.WebApi\Payment.WebApi.csproj" />
+  </ItemGroup>
+
 </Project>

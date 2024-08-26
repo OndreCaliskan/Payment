@@ -1,7 +1,27 @@
+using Payment.DataAccessLayer.Concrete;
+using Payment.EntityLayer.Concrete;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Payment.WebUI.Models.Mail;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<Payment.WebUI.Models.Mail.IEmailSender, SmtpEmailSender>(i =>
+    new SmtpEmailSender(
+        builder.Configuration["EmailSender:Host"],
+        builder.Configuration.GetValue<int>("EmailSender:Port"),
+        builder.Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+        builder.Configuration["EmailSender:Username"],
+        builder.Configuration["EmailSender:Password"])
+);
+
+
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
 
 var app = builder.Build();
 
