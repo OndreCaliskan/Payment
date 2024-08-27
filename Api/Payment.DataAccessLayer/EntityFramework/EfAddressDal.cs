@@ -25,7 +25,9 @@ namespace Payment.DataAccessLayer.EntityFramework
                 Country = x.Country,
                 PostalCode = x.PostalCode,
                 CreateTime = x.CreateTime,
-                UpdateTime = x.UpdateTime
+                UpdateTime = x.UpdateTime,
+                CreateUser = x.CreateUser,
+                UpdateUser = x.UpdateUser
             }).ToList();
             return values;
         }

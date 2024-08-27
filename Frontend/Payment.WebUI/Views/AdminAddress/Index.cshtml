@@ -14,6 +14,8 @@
         <th>Posta Kodu </th>
         <th>Oluşturulma Zamanı </th>
         <th>Güncellenme Zamanı </th>
+        <th>Oluşturan Kullanıcı </th>
+        <th>Güncelleyen Kullanıcı </th>
         <th>Kullanıcı Adı Soyadı </th>
         <th>Sil</th>
         <th>Güncelle</th>
@@ -27,8 +29,10 @@
             <td>@item.City</td>
             <td>@item.Country</td>
             <td>@item.PostalCode</td>
-            <td>@item.CreateTime</td>
-            <td>@item.UpdateTime</td>
+            <td>@item.CreateTime.ToShortDateString()</td>
+            <td>@item.UpdateTime.ToShortDateString()</td>
+            <td>@item.CreateUser</td>
+            <td>@item.UpdateUser</td>
             <td>@item.UserName</td>
             <td><a href="/AdminAddress/DeleteAddress/@item.AddressID" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
             <td><a href="/AdminAddress/UpdateAddress/@item.AddressID" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>

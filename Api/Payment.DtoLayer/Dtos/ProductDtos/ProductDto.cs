@@ -18,7 +18,7 @@ namespace Payment.DtoLayer.Dtos.ProductDtos
         public int Stock { get; set; }
         public string? CoverImage { get; set; }
         public decimal? Rating { get; set; }
-        public string? IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }
         public string CreateUser { get; set; }

@@ -14,7 +14,18 @@ namespace Payment.WebApi.Controllers
         {
             _categoryService = categoryService;
         }
-
+        [HttpGet("IsActiveAproved")]
+        public IActionResult IsActiveAproved(int id)
+        {
+            _categoryService.TCategoryIsActiveChange(id);
+            return Ok();
+        }
+        [HttpGet("IsActiveAprovedCancel")]
+        public IActionResult IsActiveAprovedCancel(int id)
+        {
+            _categoryService.TCategoryIsActiveChangeCancel(id);
+            return Ok();
+        }
         [HttpGet]
         public IActionResult CategoryList()
         {

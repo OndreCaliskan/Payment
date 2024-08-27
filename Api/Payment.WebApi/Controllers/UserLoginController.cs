@@ -33,5 +33,12 @@ namespace Payment.WebApi.Controllers
 
             return BadRequest("User login failed");
         }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok("User logged out successfully");
+        }
     }
 }

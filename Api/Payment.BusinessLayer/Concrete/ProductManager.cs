@@ -18,20 +18,20 @@ namespace Payment.BusinessLayer.Concrete
         {
             _productDal = productDal;
         }
-        public void TProductIsActiveChange(int id)
+        public string TProductIsActiveChange(int id)
         {
-            _productDal.ProductIsActiveChange(id);
+            return _productDal.ProductIsActiveChange(id);
         }
-        public void TProductIsActiveChangeCancel(int id)
+        public string TProductIsActiveChangeCancel(int id)
         {
-            _productDal.ProductIsActiveChangeCancel(id);
+            return _productDal.ProductIsActiveChangeCancel(id);
         }
         public void TDelete(Product t)
         {
             _productDal.Delete(t);
         }
 
-        
+
 
         public List<Product> TGetList()
         {
@@ -56,7 +56,7 @@ namespace Payment.BusinessLayer.Concrete
 
         public List<ProductDto> TGetProductWithCategoryName()
         {
-            var values=_productDal.GetProductWithCategoryName();
+            var values = _productDal.GetProductWithCategoryName();
             return values;
         }
     }

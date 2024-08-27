@@ -62,13 +62,14 @@ namespace Payment.WebApi.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateAddress(UpdateAddressDto updateAddressDto)
+        public async Task<IActionResult> UpdateAddress(UpdateAddressDto updateAddressDto)
         {
             var address = _addressService.TGetByID(updateAddressDto.AddressID);
             if (address == null)
             {
                 return NotFound("Address Not Found.");
             }
+            var user = await _userManager.GetUserAsync(User);
             address.AddressID = updateAddressDto.AddressID;
             address.AddressLine = updateAddressDto.AddressLine;
             address.City = updateAddressDto.City;
@@ -77,8 +78,8 @@ namespace Payment.WebApi.Controllers
             address.CreateTime = address.CreateTime;
             address.UpdateTime = DateTime.Parse(DateTime.Now.ToShortDateString());
             address.CreateUser = address.CreateUser;
-            address.UpdateUser = address.UpdateUser;
-            address.AppUserId = updateAddressDto.AppUserId;
+            address.UpdateUser = user.UserName;
+            address.AppUserId = address.AppUserId;
             _addressService.TUpdate(address);
             return Ok("Address updated.");
         }

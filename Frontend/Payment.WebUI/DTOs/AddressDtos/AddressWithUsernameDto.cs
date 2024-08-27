@@ -9,6 +9,8 @@
         public string PostalCode { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
+        public string CreateUser { get; set; }
+        public string UpdateUser { get; set; }
         public string UserName { get; set; }
     }
 }

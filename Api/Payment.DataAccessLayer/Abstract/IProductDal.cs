@@ -10,8 +10,8 @@ namespace Payment.DataAccessLayer.Abstract
 {
     public interface IProductDal : IGenericDal<Product>
     {
-        void ProductIsActiveChange(int id);
-        void ProductIsActiveChangeCancel(int id);
+        string ProductIsActiveChange(int id);
+        string ProductIsActiveChangeCancel(int id);
         List <ProductDto> GetProductWithCategoryName();
     }
 }

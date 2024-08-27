@@ -30,7 +30,7 @@ namespace Payment.WebApi.Controllers
         [HttpGet("GetProductWithCategoryName")]
         public IActionResult GetProductWithCategoryName()
         {
-            var values=_productService.TGetProductWithCategoryName();
+            var values = _productService.TGetProductWithCategoryName();
             return Ok(values);
         }
 
@@ -66,5 +66,6 @@ namespace Payment.WebApi.Controllers
             var values = _productService.TGetByID(id);
             return Ok(values);
         }
+
     }
 }

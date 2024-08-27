@@ -5,16 +5,16 @@
     var categories = ViewBag.Categories as IEnumerable<dynamic>;
 }
 <form method="post" enctype="multipart/form-data" asp-action="UpdateProduct">
-    
+
     <label>Ürün Id</label>
-    <input type="hidden" asp-for="ProductID" class="form-control"  />
+    <input type="hidden" asp-for="ProductID" class="form-control" />
     <br /><label>Ürün İsmi</label>
     <input type="text" asp-for="Title" class="form-control" />
     <br />
     <div class="form-group">
         <label for="CategoryId">Kategori</label>
         <select id="CategoryId" name="CategoryId" class="form-control">
-            @foreach (var category in categories)
+            @foreach (var category in ViewBag.Categories)
             {
                 <option value="@category.Id">@category.Name</option>
             }
@@ -33,22 +33,19 @@
     <input type="text" asp-for="Stock" class="form-control" />
     <br />
     <label>Resim</label>
-    <input type="file" asp-for="CoverImage" class="form-control" />
+    <input type="file" asp-for="File" class="form-control" />
     <br />
-    <label for="isActive">Aktif Mi?</label>
-    <input type="checkbox" id="isActive" name="isActive" value="true">
-    <br />
-    <label>Oluşturma Tarihi</label>
-    <input type="date" asp-for="CreateTime" class="form-control" />
+    <label for="isActive">Aktif Mi?</label><br>
+    <input type="radio" id="isActiveYes" name="isActive" value="true">
+    <label for="isActiveYes">Yes</label><br>
+    <input type="radio" id="isActiveNo" name="isActive" value="false">
+    <label for="isActiveNo">No</label>
     <br />
     <label>Oluşturan Kullanıcı</label>
-    <input type="text" asp-for="CreateUser" class="form-control"  />
-    <br />
-    <label>Güncelleme Tarihi</label>
-    <input type="date" asp-for="CreateTime" class="form-control"  />
+    <input type="text" asp-for="CreateUser" class="form-control" />
     <br />
     <label>Güncelleyen Kullanıcı</label>
-    <input type="text" asp-for="CreateUser" class="form-control"  />
+    <input type="text" asp-for="UpdateUser" class="form-control" />
     <br />
     <button class="btn btn-primary">Ürünü Güncelle</button>
 </form>
