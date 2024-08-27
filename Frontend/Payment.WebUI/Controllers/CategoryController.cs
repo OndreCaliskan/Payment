@@ -174,5 +174,27 @@ namespace Payment.WebUI.Controllers
 
             return View(updateCategoryDto);
         }
+        public async Task<IActionResult> IsActiveApproved(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7066/api/Category/IsActiveAproved?id={id}");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+
+        public async Task<IActionResult> IsActiveApprovedCancel(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7066/api/Category/IsActiveAprovedCancel?id={id}");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
     }
 }

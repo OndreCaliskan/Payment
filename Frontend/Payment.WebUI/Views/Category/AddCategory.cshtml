@@ -17,6 +17,14 @@
     <label>Fotoğraf</label>
     <input type="file" asp-for="File" class="form-control" />
     <br />
+    <br />
+    <label for="isActive">Aktif Mi?</label><br>
+    <input type="radio" id="isActiveYes" name="isActive" value="true">
+    <label for="isActiveYes">Evet</label><br>
+    <input type="radio" id="isActiveNo" name="isActive" value="false">
+    <label for="isActiveNo">Hayır</label>
+    <br />
+    <br />
     <label>Ekleyen Kullanıcı</label>
     <input type="text" asp-for="CreateUser" class="form-control" />
     <br />

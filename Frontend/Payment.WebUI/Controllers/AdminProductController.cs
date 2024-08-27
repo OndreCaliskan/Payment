@@ -64,7 +64,7 @@ namespace Payment.WebUI.Controllers
         {
             using (var context = new Context())
             {
-                var categoryNames = context.Categories // Kategoriler tablosunu kullanın
+                var categoryNames = context.Categories 
                     .Select(x => new
                     {
                         x.Id,
@@ -72,40 +72,40 @@ namespace Payment.WebUI.Controllers
                     })
                     .ToList();
 
-                // Kategori isimlerini ve Id'lerini ViewBag'e aktarıyoruz
+       
                 ViewBag.Categories = categoryNames;
             }
-            //if (model.File == null || model.File.Length == 0)
-            //{
-            //    ModelState.AddModelError("File", "Lütfen bir dosya yükleyin.");
-            //    return View();
-            //}
+            if (model.File == null || model.File.Length == 0)
+            {
+                ModelState.AddModelError("File", "Lütfen bir dosya yükleyin.");
+                return View();
+            }
 
-            //string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            //string extension = Path.GetExtension(model.File.FileName).ToLower();
+            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            string extension = Path.GetExtension(model.File.FileName).ToLower();
 
-            //if (!allowedExtensions.Contains(extension))
-            //{
-            //    ModelState.AddModelError("File", "Sadece resim dosyaları yüklenebilir.");
-            //    return View();
-            //}
+            if (!allowedExtensions.Contains(extension))
+            {
+                ModelState.AddModelError("File", "Sadece resim dosyaları yüklenebilir.");
+                return View();
+            }
 
 
-            //// Dosya kaydetme işlemi
-            //string filename = Guid.NewGuid().ToString() + extension;
-            //var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", filename);
+            // Dosya kaydetme işlemi
+            string filename = Guid.NewGuid().ToString() + extension;
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", filename);
 
-            //if (!Directory.Exists(Path.GetDirectoryName(path)))
-            //{
-            //    Directory.CreateDirectory(Path.GetDirectoryName(path));
-            //}
+            if (!Directory.Exists(Path.GetDirectoryName(path)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+            }
 
-            //using (var stream = new FileStream(path, FileMode.Create))
-            //{
-            //    model.File.CopyTo(stream);
-            //}
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                model.File.CopyTo(stream);
+            }
 
-            //model.CoverImage = "/img/" + filename;
+            model.CoverImage = "/img/" + filename;
             model.CreateTime = DateTime.Now;
             model.UpdateTime = DateTime.Now;
 
