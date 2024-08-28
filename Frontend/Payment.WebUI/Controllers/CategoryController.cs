@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Payment.WebUI.DTOs.CategoryDtos;
+using Payment.WebUI.Helpers;
 using System.Text;
 
 namespace Payment.WebUI.Controllers
@@ -8,27 +9,31 @@ namespace Payment.WebUI.Controllers
     public class CategoryController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-       
-
-
 
         public CategoryController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-            
         }
 
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7066/api/Category");
-            if (responseMessage.IsSuccessStatusCode)
+            var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
+            if (responseMessage2.IsSuccessStatusCode)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
-                return View(values);
+                var user = await responseMessage2.Content.ReadFromJsonAsync<AppUser>();
+                TempData["UserName"] = user.Name;
+
+                var responseMessage = await client.GetAsync("https://localhost:7066/api/Category");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                    var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
+                    return View(values);
+                }
+                return View();
             }
-            return View();
+            return RedirectToAction("Index", "Login");
         }
 
         public IActionResult AddCategory()
@@ -39,54 +44,39 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategory(CreateCategoryDto createCategoryDto)
         {
-            if (createCategoryDto.File == null || createCategoryDto.File.Length == 0)
+            try
             {
-                ModelState.AddModelError("File", "Lütfen bir dosya yükleyin.");
-                return View();
-            }
+                if (createCategoryDto.File != null)
+                {
+                    createCategoryDto.ImagePath = ImageHelper.SaveImage(createCategoryDto.File);
+                }
 
-            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            string extension = Path.GetExtension(createCategoryDto.File.FileName).ToLower();
+                createCategoryDto.CreateTime = DateTime.Now;
+                createCategoryDto.UpdateTime = DateTime.Now;
+                createCategoryDto.CreateUser = TempData["UserName"].ToString();
+                createCategoryDto.UpdateUser = TempData["UserName"].ToString();
 
-            if (!allowedExtensions.Contains(extension))
-            {
-                ModelState.AddModelError("File", "Sadece resim dosyaları yüklenebilir.");
-                return View();
-            }
+                if (!ModelState.IsValid)
+                {
+                    return View(createCategoryDto);
+                }
 
-            // Dosya kaydetme işlemi
-            string filename = Guid.NewGuid().ToString() + extension;
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", filename);
+                var client = _httpClientFactory.CreateClient();
+                var jsonData = JsonConvert.SerializeObject(createCategoryDto);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var responseMessage = await client.PostAsync("https://localhost:7066/api/Category", stringContent);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
 
-            if (!Directory.Exists(Path.GetDirectoryName(path)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-            }
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                createCategoryDto.File.CopyTo(stream);
-            }
-
-            createCategoryDto.ImagePath = "/img/" + filename;
-            createCategoryDto.CreateTime = DateTime.Now;
-            createCategoryDto.UpdateTime = DateTime.Now;
-
-            if (!ModelState.IsValid)
-            {
                 return View(createCategoryDto);
             }
-
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createCategoryDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7066/api/Category", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", ex.Message);
+                return View(createCategoryDto);
             }
-
-            return View();
         }
 
         public async Task<IActionResult> DeleteCategory(int id)
@@ -117,63 +107,44 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCategory(UpdateCategoryDto updateCategoryDto)
         {
-            updateCategoryDto.UpdateTime = DateTime.Now;
-
-            if (updateCategoryDto.File != null && updateCategoryDto.File.Length > 0)
+            try
             {
-                // Dosya uzantısını kontrol etme
-                string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                string extension = Path.GetExtension(updateCategoryDto.File.FileName).ToLower();
+                updateCategoryDto.UpdateTime = DateTime.Now;
+                updateCategoryDto.UpdateUser = TempData["UserName"].ToString();
+                updateCategoryDto.CreateUser = TempData["UserName"].ToString();
 
-                if (!allowedExtensions.Contains(extension))
+                if (updateCategoryDto.File != null && updateCategoryDto.File.Length > 0)
                 {
-                    ModelState.AddModelError("File", "Sadece resim dosyaları yüklenebilir.");
+                    // Eski resmi silme işlemi
+                    ImageHelper.DeleteImage(updateCategoryDto.ImagePath);
+
+                    // Yeni resmi kaydetme işlemi
+                    updateCategoryDto.ImagePath = ImageHelper.SaveImage(updateCategoryDto.File);
+                }
+
+                if (!ModelState.IsValid)
+                {
                     return View(updateCategoryDto);
                 }
 
-                // Mevcut resmi silme işlemi (eğer varsa)
-                if (!string.IsNullOrEmpty(updateCategoryDto.ImagePath))
+                var client = _httpClientFactory.CreateClient();
+                var jsonData = JsonConvert.SerializeObject(updateCategoryDto);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var responseMessage = await client.PutAsync("https://localhost:7066/api/Category", stringContent);
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", updateCategoryDto.ImagePath.TrimStart('/'));
-                    if (System.IO.File.Exists(oldImagePath))
-                    {
-                        System.IO.File.Delete(oldImagePath);
-                    }
+                    return RedirectToAction("Index");
                 }
 
-                // Yeni dosyayı kaydetme
-                string filename = Guid.NewGuid().ToString() + extension;
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", filename);
-
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    updateCategoryDto.File.CopyTo(stream);
-                }
-
-                updateCategoryDto.ImagePath = "/img/" + filename;
-            }
-
-            if (!ModelState.IsValid)
-            {
                 return View(updateCategoryDto);
             }
-
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateCategoryDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7066/api/Category", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", ex.Message);
+                return View(updateCategoryDto);
             }
-
-            return View(updateCategoryDto);
         }
+
         public async Task<IActionResult> IsActiveApproved(int id)
         {
             var client = _httpClientFactory.CreateClient();
@@ -184,7 +155,6 @@ namespace Payment.WebUI.Controllers
             }
             return View();
         }
-
 
         public async Task<IActionResult> IsActiveApprovedCancel(int id)
         {

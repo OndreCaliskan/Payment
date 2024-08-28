@@ -13,6 +13,8 @@ using FluentValidation;
 using Payment.WebUI.DTOs.CategoryDtos;
 using Payment.WebUI.ValidationRules.CategoryValidationRules;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +50,7 @@ builder.Services.AddControllers().AddXmlSerializerFormatters();
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddAutoMapper(typeof(Program));
+
 
 builder.Services.AddHttpClient();
 
