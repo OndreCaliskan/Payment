@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Payment.WebUI.Models.Mail;
+using System.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +22,9 @@ builder.Services.AddScoped<Payment.WebUI.Models.Mail.IEmailSender, SmtpEmailSend
 );
 
 builder.Services.AddDbContext<Context>();
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 builder.Services.AddAutoMapper(typeof(Program));
+
 
 builder.Services.AddHttpClient();
 
