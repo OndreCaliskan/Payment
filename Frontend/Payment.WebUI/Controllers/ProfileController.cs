@@ -50,19 +50,19 @@ namespace Payment.WebUI.Controllers
                 var userID = await responseMessage.Content.ReadFromJsonAsync<int>();
                 ViewBag.UserID = userID;
 
-                var client1 = _httpClientFactory.CreateClient();
-                var responseMessage1 = await client1.GetAsync("https://localhost:7066/api/User");
-                if (responseMessage1.IsSuccessStatusCode)
-                {
-                    var content = await responseMessage1.Content.ReadAsStringAsync();
-                    var profile = JsonConvert.DeserializeObject<ResultAppUserDto>(content);
-                    profile.UpdateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
-                    profile.CreateTime = DateTime.Parse(profile.CreateTime.ToShortDateString());
-                    return View(profile);
-                }
+            }
+            var client1 = _httpClientFactory.CreateClient();
+            var responseMessage1 = await client1.GetAsync("https://localhost:7066/api/User");
+            if (responseMessage1.IsSuccessStatusCode)
+            {
+                var content = await responseMessage1.Content.ReadAsStringAsync();
+                var profile = JsonConvert.DeserializeObject<ResultAppUserDto>(content);
+                profile.UpdateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
+                profile.CreateTime = DateTime.Parse(profile.CreateTime.ToShortDateString());
+                return View(profile);
             }
 
-            return RedirectToAction("Index", "Login");
+            return View();
         }
 
         [HttpPost]

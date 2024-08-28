@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Payment.BusinessLayer.Abstract;
+using Payment.DtoLayer.Dtos.AddressDtos;
 using Payment.DtoLayer.Dtos.AppUserDtos;
 
 namespace Payment.WebApi.Controllers
@@ -12,10 +14,12 @@ namespace Payment.WebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IUserService _userService;
 
-        public UserController(UserManager<AppUser> userManager)
+        public UserController(UserManager<AppUser> userManager, IUserService userService)
         {
             _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -51,6 +55,15 @@ namespace Payment.WebApi.Controllers
                 return NotFound("User not found");
             return Ok(user.Id);
         }
+
+        [HttpGet("GetUserAddresses")]
+        public async Task<IActionResult> GetUserAddresses()
+        {
+            var user=await _userManager.GetUserAsync(User);
+            var userAddresses = await _userService.GetAddresses(user.Id);
+            return Ok(userAddresses);
+        }
+
 
         [HttpGet("GetUserRoles")]
         public async Task<IActionResult> GetUserRoles(string username)

@@ -1,0 +1,65 @@
+﻿@model List<ResultAddressDto>
+
+@{
+    ViewData["Title"] = "UserAddresses";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+    int count = 0;
+}
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: center; /* Yatay ortalama */
+        align-items: center; /* Dikey ortalama */
+        min-height: 60vh; /* Ekranın tamamını kaplamak için */
+        flex-direction: column; /* Tablonun altına buton eklemek için dikey düzen */
+        padding: 20px;
+    }
+
+    .table {
+        width: 100%; /* Tablonun genişliği */
+        max-width: 1200px; /* Maksimum genişlik (isteğe bağlı olarak değiştirilebilir) */
+        margin: 0 auto; /* Ortalamak için */
+        background-color: #fff; /* Arka plan rengi */
+        border-radius: 8px; /* Köşeleri yuvarlama */
+        overflow: hidden; /* Kenarlardan taşmayı önlemek için */
+    }
+
+    .button-container {
+        margin-top: 20px; /* Tablo ile buton arasındaki boşluk */
+        text-align: center; /* Butonu ortalama */
+        width: 100%; /* Tam genişlik */
+    }
+</style>
+
+<div class="form-container">
+    <table class="table table-bordered">
+        <tr>
+            <th>#</th>
+            <th>Adres</th>
+            <th>Şehir </th>
+            <th>Ülke </th>
+            <th>Posta Kodu </th>
+            <th>Sil</th>
+            <th>Güncelle</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <th>@count</th>
+                <td>@item.AddressLine</td>
+                <td>@item.City</td>
+                <td>@item.Country</td>
+                <td>@item.PostalCode</td>
+                <td><a href="/Address/DeleteAddress/@item.AddressID" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
+                <td><a href="/Address/UpdateAddress/@item.AddressID" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
+            </tr>
+        }
+    </table>
+    <div class="button-container">
+        <a href="/Address/CreateAddress/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Address Girişi</a>
+    </div>
+</div>
+
+
