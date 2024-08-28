@@ -18,7 +18,7 @@ namespace Payment.WebUI.Controllers
     public class AdminProductController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-
+        private readonly ICategoryService _categoryService;
 
 
         public AdminProductController(IHttpClientFactory httpClientFactory)
@@ -29,6 +29,11 @@ namespace Payment.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
+            using (var context = new Context())
+            {
+                ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
+                
+            }
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7066/api/Product");
             if (responseMessage.IsSuccessStatusCode)

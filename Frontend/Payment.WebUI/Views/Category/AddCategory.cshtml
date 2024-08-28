@@ -5,31 +5,36 @@
 }
 
 <form  method="post" enctype="multipart/form-data">
-    <label>Kategori Adı</label>
-    <input type="text" asp-for="Name" class="form-control" />
+   <div>
+        <input type="text" asp-for="Name" class="form-control" placeholder="Kategori Adı" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+   </div> 
+   <br />
+    <div>
+        <input type="text" asp-for="Description" class="form-control" placeholder="Açıklama" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+
+    </div>
     <br />
-    <label>Açıklama</label>
-    <input type="text" asp-for="Description" class="form-control" />
+    <div>
+        <input type="file" asp-for="File" class="form-control" accept=".jpg,.jpeg,.png" placeholder="Fotoğraf" />
+    </div>
     <br />
-    <label>Aktif Mi</label>
-    <input type="text" asp-for="IsActive" class="form-control" />
+    <div>
+        <label for="isActive">Aktif Mi?</label><br>
+        <input type="radio" id="isActiveYes" name="isActive" value="true">
+        <label for="isActiveYes">Evet</label><br>
+        <input type="radio" id="isActiveNo" name="isActive" value="false">
+        <label for="isActiveNo">Hayır</label>
+    </div>
     <br />
-    <label>Fotoğraf</label>
-    <input type="file" asp-for="File" class="form-control" />
+    <div>
+        <input type="text" asp-for="CreateUser" class="form-control" placeholder="Ekleyen Kullanıcı" />
+    </div>
     <br />
-    <br />
-    <label for="isActive">Aktif Mi?</label><br>
-    <input type="radio" id="isActiveYes" name="isActive" value="true">
-    <label for="isActiveYes">Evet</label><br>
-    <input type="radio" id="isActiveNo" name="isActive" value="false">
-    <label for="isActiveNo">Hayır</label>
-    <br />
-    <br />
-    <label>Ekleyen Kullanıcı</label>
-    <input type="text" asp-for="CreateUser" class="form-control" />
-    <br />
-    <label>Güncelleyen Kullanıcı</label>
-    <input type="text" asp-for="UpdateUser" class="form-control" />
+    <div>
+        <input type="text" asp-for="UpdateUser" class="form-control" placeholder="Güncelleyen Kullanıcı" />
+    </div>
     <br />
     <button class="btn btn-primary">Kategori Ekle</button>
 </form>

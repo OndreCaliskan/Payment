@@ -74,7 +74,7 @@ namespace Payment.WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(createCategoryDto);
             }
 
             var client = _httpClientFactory.CreateClient();

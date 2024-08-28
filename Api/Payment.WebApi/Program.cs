@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Payment.BusinessLayer.Abstract;
 using Payment.BusinessLayer.Concrete;
 using Payment.DataAccessLayer.Abstract;
@@ -6,8 +7,17 @@ using Payment.DataAccessLayer.Concrete;
 using Payment.DataAccessLayer.EntityFramework;
 using Payment.EntityLayer.Concrete;
 using Payment.WebApi.Mapping;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews()
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<Program>();
+        fv.DisableDataAnnotationsValidation = true;
+        fv.ValidatorOptions.LanguageManager.Culture = new CultureInfo("tr");
+    });
 
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
