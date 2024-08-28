@@ -1,0 +1,48 @@
+﻿@model CreateAddressDto
+@{
+    ViewData["Title"] = "CreateAddress";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+    int id = ViewBag.UserID;
+}
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: center; /* Yatay ortalama */
+        align-items: center; /* Dikey ortalama */
+        min-height: 100vh; /* Ekranın tamamını kaplamak için */
+    }
+
+    .form-box {
+        width: 50%; /* Formun genişliği */
+        max-width: 500px; /* Maksimum genişlik */
+        padding: 20px; /* İç boşluk */
+        background-color: #f8f9fa; /* Arka plan rengi */
+        border-radius: 8px; /* Kenar yuvarlama */
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Gölgelendirme */
+    }
+</style>
+
+
+<div class="form-container">
+    <div class="form-box">
+        <form method="post">
+            <label>AddressLine</label>
+            <input type="text" asp-for="AddressLine" class="form-control" />
+            <br />
+            <label>City</label>
+            <input type="text" asp-for="City" class="form-control" />
+            <br />
+            <label>Country</label>
+            <input type="text" asp-for="Country" class="form-control" />
+            <br />
+            <label>PostalCode</label>
+            <input type="text" asp-for="PostalCode" class="form-control" />
+            <br />
+            <input type="hidden" asp-for="@id" />
+            <br />
+            <button class="btn btn-primary">Adresi Ekle</button>
+        </form>
+    </div>
+</div>
+

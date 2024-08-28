@@ -38,7 +38,7 @@ namespace Payment.WebUI.Controllers
 
                 if (roles.Contains("Admin") || roles.Contains("Manager"))
                 {
-                    return RedirectToAction("Index", "AdminRole");
+                    return RedirectToAction("Index", "Profile");
                 }
                 return RedirectToAction("Index", "Home");
             }
