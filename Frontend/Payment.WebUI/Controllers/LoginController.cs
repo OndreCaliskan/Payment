@@ -32,6 +32,14 @@ namespace Payment.WebUI.Controllers
             var responseMessage = await client.PostAsync("https://localhost:7066/api/UserLogin", content);
             if (responseMessage.IsSuccessStatusCode)
             {
+                var rolesResponse = await client.GetAsync($"https://localhost:7066/api/User/GetUserRoles?username={loginDto.Username}");
+                var rolesJsonData = await rolesResponse.Content.ReadAsStringAsync();
+                var roles = JsonConvert.DeserializeObject<List<string>>(rolesJsonData);
+
+                if (roles.Contains("Admin") || roles.Contains("Manager"))
+                {
+                    return RedirectToAction("Index", "Profile");
+                }
                 return RedirectToAction("Index", "Home");
             }
             return View();

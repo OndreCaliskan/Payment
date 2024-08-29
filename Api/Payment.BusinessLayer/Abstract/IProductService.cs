@@ -10,8 +10,8 @@ namespace Payment.BusinessLayer.Abstract
 {
     public interface IProductService : IGenericService<Product>
     {
-        void TProductIsActiveChange(int id);
-        void TProductIsActiveChangeCancel(int id);
+        string TProductIsActiveChange(int id);
+        string TProductIsActiveChangeCancel(int id);
         List<ProductDto> TGetProductWithCategoryName();
     }
 }

@@ -29,19 +29,19 @@
         <form method="post">
             <input type="hidden" asp-for="@id" />
             <label>UserName</label>
-            <input type="text" asp-for="UserName" class="form-control" />
+            <input type="text" asp-for="UserName" class="form-control" readonly/>
             <br />
             <label>Email</label>
-            <input type="text" asp-for="Email" class="form-control" />
+            <input type="text" asp-for="Email" class="form-control" readonly />
             <br />
             <label>Name</label>
-            <input type="text" asp-for="Name" class="form-control" />
+            <input type="text" asp-for="Name" class="form-control" readonly />
             <br />
             <label>Surname</label>
-            <input type="text" asp-for="Surname" class="form-control" />
+            <input type="text" asp-for="Surname" class="form-control" readonly />
             <br />
             <label>Phone</label>
-            <input type="number" asp-for="Phone" class="form-control" />
+            <input type="number" asp-for="Phone" class="form-control" readonly />
             <br />
             <label>CreateTime</label>
             <input type="text" value="@Model.CreateTime.ToShortDateString()" class="form-control" readonly />
@@ -49,7 +49,8 @@
             <label>UpdateTime</label>
             <input type="text" value="@Model.UpdateTime.ToShortDateString()" class="form-control"  readonly/>
             <br />
-            <button class="btn btn-primary">Profili Güncelle</button>
+            <a href="/Profile/UpdateProfile/@id" class="btn btn-primary btn-block">Profili Güncelle</a>
+            <a href="/Address/UserAddresses/@id" class="btn btn-primary btn-block">Adres Bilgieri</a>
         </form>
     </div>
 </div>

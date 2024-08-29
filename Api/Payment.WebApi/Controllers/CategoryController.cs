@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Payment.BusinessLayer.Abstract;
 using Payment.EntityLayer.Concrete;
 
 namespace Payment.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -14,7 +16,18 @@ namespace Payment.WebApi.Controllers
         {
             _categoryService = categoryService;
         }
-
+        [HttpGet("IsActiveAproved")]
+        public IActionResult IsActiveAproved(int id)
+        {
+            _categoryService.TCategoryIsActiveChange(id);
+            return Ok();
+        }
+        [HttpGet("IsActiveAprovedCancel")]
+        public IActionResult IsActiveAprovedCancel(int id)
+        {
+            _categoryService.TCategoryIsActiveChangeCancel(id);
+            return Ok();
+        }
         [HttpGet]
         public IActionResult CategoryList()
         {

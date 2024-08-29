@@ -22,42 +22,55 @@ namespace Payment.DataAccessLayer.EntityFramework
         public List<ProductDto> GetProductWithCategoryName()
         {
             var context = new Context();
-            var values = context.Products.Include(x => x.Category).Select(y => new ProductDto
+            List<ProductDto> value = new List<ProductDto>();
+            //var values = context.Products.Include(x => x.Category).Select(y => new ProductDto
+            //{
+            //    ProductID = y.ProductID,
+            //    CategoryName = y.Category.Name,
+            //    CategoryId = y.Category.Id, 
+            //    Title=y.Title,
+            //    Description=y.Description,
+            //    Price=y.Price,
+            //    DiscountRate=y.DiscountRate,
+            //    Stock=y.Stock,
+            //    CoverImage=y.CoverImage,
+            //    Rating=y.Rating,
+            //    IsActive=y.IsActive,
+            //    CreateTime=y.CreateTime,
+            //    UpdateTime=y.UpdateTime,
+            //    CreateUser=y.CreateUser,
+            //    UpdateUser=y.UpdateUser,
+
+
+            //});
+            return value;
+        }
+
+        public string ProductIsActiveChange(int id)
+        {
+            var context = new Context();
+            var values = context.Products.Find(id);
+            values.IsActive = true;
+            context.SaveChanges();
+            if (values.IsActive == true)
             {
-                ProductID = y.ProductID,
-                CategoryName = y.Category.Name,
-                CategoryId = y.Category.Id, 
-                Title=y.Title,
-                Description=y.Description,
-                Price=y.Price,
-                DiscountRate=y.DiscountRate,
-                Stock=y.Stock,
-                CoverImage=y.CoverImage,
-                Rating=y.Rating,
-                IsActive=y.IsActive,
-                CreateTime=y.CreateTime,
-                UpdateTime=y.UpdateTime,
-                CreateUser=y.CreateUser,
-                UpdateUser=y.UpdateUser,
-
-
-            });
-            return values.ToList();
+                return "Aktif";
+            }
+            return "Pasif";
         }
-
-        public void ProductIsActiveChange(int id)
+        public string ProductIsActiveChangeCancel(int id)
         {
             var context = new Context();
             var values = context.Products.Find(id);
-            values.IsActive = "Aktif";
+            values.IsActive = false;
             context.SaveChanges();
+            if (values.IsActive == false)
+            {
+                return "Pasif";
+            }
+
+            return "Aktif";
         }
-        public void ProductIsActiveChangeCancel(int id)
-        {
-            var context = new Context();
-            var values = context.Products.Find(id);
-            values.IsActive = "Pasif";
-            context.SaveChanges();
-        }
+
     }
 }

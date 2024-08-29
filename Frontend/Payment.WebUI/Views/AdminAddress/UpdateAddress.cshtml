@@ -1,0 +1,24 @@
+﻿@model UpdateAddressDto
+@{
+    ViewData["Title"] = "UpdateAddress";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Adres Güncelleme Sayfası</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="AddressID" />
+    <label>Adres</label>
+    <input type="text" asp-for="AddressLine" class="form-control" />
+    <br />
+    <label>Şehir</label>
+    <input type="text" asp-for="City" class="form-control" />
+    <br />
+    <label>Ülke</label>
+    <input type="text" asp-for="Country" class="form-control" />
+    <br />
+    <label>Posta Kodu</label>
+    <input type="text" asp-for="PostalCode" class="form-control" />
+    <br />
+    <button class="btn btn-success">Adresi Güncelle</button>
+</form>

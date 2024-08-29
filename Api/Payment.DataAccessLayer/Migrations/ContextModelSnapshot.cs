@@ -260,10 +260,6 @@ namespace Payment.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("AddressID");
 
                     b.HasIndex("AppUserId");
@@ -371,8 +367,8 @@ namespace Payment.DataAccessLayer.Migrations
                     b.Property<decimal?>("DiscountRate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("IsActive")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");

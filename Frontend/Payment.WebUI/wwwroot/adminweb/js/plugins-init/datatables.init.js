@@ -75,7 +75,8 @@ let dataSet = [
 
         "scrollY":        "42vh",
         "scrollCollapse": true,
-        "paging":         false
+        "paging": true
+
     });
 
     table2.on('click', 'tbody tr', function() {
@@ -256,7 +257,7 @@ let dataSet = [
     //Show / hide columns dynamically
     var table = $('#example-api-6').DataTable( {
         "scrollY": "200px",
-        "paging": false
+        "paging": true
     } );
  
     $('.toggle-vis').on( 'click', function (e) {

@@ -10,5 +10,34 @@ namespace Payment.DataAccessLayer.EntityFramework
         public EfCategoryDal(Context context) : base(context)
         {
         }
+
+        public string CategoryIsActiveChange(int id)
+        {
+            var context = new Context();
+            var values = context.Categories.Find(id);
+            values.IsActive = true;
+            context.SaveChanges();
+            if (values.IsActive == true)
+            {
+                return "Aktif";
+            }
+            return "Pasif";
+
+        }
+
+        public string CategoryIsActiveChangeCancel(int id)
+        {
+            var context = new Context();
+            var values = context.Categories.Find(id);
+            values.IsActive = false;
+            context.SaveChanges();
+            if (values.IsActive == false)
+            {
+                return "Pasif";
+            }
+
+            return "Aktif";
+        }
+
     }
 }

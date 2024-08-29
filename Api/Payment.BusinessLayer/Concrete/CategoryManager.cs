@@ -33,6 +33,16 @@ namespace Payment.BusinessLayer.Concrete
             _categoryDal.Insert(t);
         }
 
+        public string TCategoryIsActiveChange(int id)
+        {
+            return _categoryDal.CategoryIsActiveChange(id);
+        }
+
+        public string TCategoryIsActiveChangeCancel(int id)
+        {
+            return _categoryDal.CategoryIsActiveChangeCancel(id);
+        }
+
         public void TUpdate(Category t)
         {
             _categoryDal.Update(t);

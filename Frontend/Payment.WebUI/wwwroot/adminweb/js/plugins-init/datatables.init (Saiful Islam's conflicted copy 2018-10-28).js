@@ -7,6 +7,9 @@
         createdRow: function ( row, data, index ) {
            $(row).addClass('selected')
         } 
+        paging: true, 
+        pageLength: 10, 
+        lengthMenu: [10, 25, 50, 100] 
     });
       
     table.on('click', 'tbody tr', function() {
@@ -29,12 +32,13 @@
     $('#example2').DataTable( {
         "scrollY":        "42vh",
         "scrollCollapse": true,
-        "paging":         false
+        "paging":         true
     });
 
     $('#example3').DataTable( {
         "scrollY": "400",
         "scrollX": true
+         "paging":         true
     });
 
     $('#example4').DataTable( {
@@ -48,3 +52,4 @@
 
 
 })(jQuery);
+

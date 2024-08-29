@@ -24,8 +24,33 @@ namespace Payment.WebUI.Controllers
             {
                 var userID = await responseMessage.Content.ReadFromJsonAsync<int>();
                 ViewBag.UserID = userID;
+
+                var client1 = _httpClientFactory.CreateClient();
+                var responseMessage1 = await client1.GetAsync("https://localhost:7066/api/User");
+                if (responseMessage1.IsSuccessStatusCode)
+                {
+                    var content = await responseMessage1.Content.ReadAsStringAsync();
+                    var profile = JsonConvert.DeserializeObject<ResultAppUserDto>(content);
+                    profile.UpdateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
+                    profile.CreateTime = DateTime.Parse(profile.CreateTime.ToShortDateString());
+                    return View(profile);
+                }
             }
 
+            return RedirectToAction("Index", "Login");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateProfile()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:7066/api/User/GetUserID");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var userID = await responseMessage.Content.ReadFromJsonAsync<int>();
+                ViewBag.UserID = userID;
+
+            }
             var client1 = _httpClientFactory.CreateClient();
             var responseMessage1 = await client1.GetAsync("https://localhost:7066/api/User");
             if (responseMessage1.IsSuccessStatusCode)
@@ -36,18 +61,21 @@ namespace Payment.WebUI.Controllers
                 profile.CreateTime = DateTime.Parse(profile.CreateTime.ToShortDateString());
                 return View(profile);
             }
+
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(UpdateUserDto updateUserDto)
+        public async Task<IActionResult> UpdateProfile(UpdateUserDto updateUserDto)
         {
             var client = _httpClientFactory.CreateClient();
             var JsonData = JsonConvert.SerializeObject(updateUserDto);
             StringContent content = new StringContent(JsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PutAsync("https://localhost:7066/api/User", content);
             if (responseMessage.IsSuccessStatusCode)
+            {
                 return RedirectToAction("Index");
+            }
             return View();
         }
 

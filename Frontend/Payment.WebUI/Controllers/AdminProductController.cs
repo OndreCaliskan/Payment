@@ -8,7 +8,9 @@ using Payment.BusinessLayer.Concrete;
 using Payment.DataAccessLayer.Concrete;
 using Payment.DtoLayer.Dtos.CategoryDtos;
 using Payment.EntityLayer.Concrete;
+using Payment.WebUI.DTOs.CategoryDtos;
 using Payment.WebUI.DTOs.ProductDtos;
+using Payment.WebUI.Helpers;
 using Payment.WebUI.Models;
 using System.Text;
 
@@ -17,7 +19,7 @@ namespace Payment.WebUI.Controllers
     public class AdminProductController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-
+        private readonly ICategoryService _categoryService;
 
 
         public AdminProductController(IHttpClientFactory httpClientFactory)
@@ -29,14 +31,28 @@ namespace Payment.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7066/api/Product/GetProductWithCategoryName");
-            if (responseMessage.IsSuccessStatusCode)
+            var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
+            if (responseMessage2.IsSuccessStatusCode)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
-                return View(values);
+                var user = await responseMessage2.Content.ReadFromJsonAsync<AppUser>();
+                TempData["UserName"] = user.Name;
+
+                using (var context = new Context())
+                {
+                    ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
+
+                }
+                var responseMessage = await client.GetAsync("https://localhost:7066/api/Product");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                    var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
+                    return View(values);
+                }
+                return View();
             }
-            return View();
+            return RedirectToAction("Index", "Login");
+
         }
         [HttpGet]
         public IActionResult AddProduct()
@@ -61,56 +77,38 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(CreateProductDto model)
         {
-            if (model.File == null || model.File.Length == 0)
+            try
             {
-                ModelState.AddModelError("File", "Lütfen bir dosya yükleyin.");
-                return View();
+                if (model.File != null)
+                {
+                    model.CoverImage = ImageHelper.SaveImage(model.File);
+                }
+
+                model.CreateTime = DateTime.Now;
+                model.UpdateTime = DateTime.Now;
+                model.CreateUser = TempData["UserName"].ToString();
+
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
+
+                var client = _httpClientFactory.CreateClient();
+                var jsonData = JsonConvert.SerializeObject(model);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var responseMessage = await client.PostAsync("https://localhost:7066/api/Product/", stringContent);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                return View(model);
             }
-
-            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            string extension = Path.GetExtension(model.File.FileName).ToLower();
-
-            if (!allowedExtensions.Contains(extension))
+            catch (Exception ex)
             {
-                ModelState.AddModelError("File", "Sadece resim dosyaları yüklenebilir.");
-                return View();
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
             }
-
-
-            // Dosya kaydetme işlemi
-            string filename = Guid.NewGuid().ToString() + extension;
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", filename);
-
-            if (!Directory.Exists(Path.GetDirectoryName(path)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-            }
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                model.File.CopyTo(stream);
-            }
-
-            model.CoverImage = "/img/" + filename;
-            model.CreateTime = DateTime.Now;
-
-
-
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(model);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7066/api/Product/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return View();
         }
         public async Task<IActionResult> DeleteProduct(int id)
         {
@@ -125,6 +123,7 @@ namespace Payment.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateProduct(int id)
         {
+
             using (var context = new Context())
             {
                 var categoryNames = context.Categories // Kategoriler tablosunu kullanın
@@ -151,16 +150,42 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(UpdateProductDto model)
         {
-
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(model);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7066/api/Product/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return RedirectToAction("Index");
+                if (model.File != null)
+                {
+                    // Eski resmi silme işlemi
+                    ImageHelper.DeleteImage(model.CoverImage);
+
+                    // Yeni resmi kaydetme işlemi
+                    model.CoverImage = ImageHelper.SaveImage(model.File);
+                }
+
+                model.UpdateTime = DateTime.Now;
+                model.UpdateUser = TempData["UserName"].ToString();
+                model.CreateUser = TempData["UserName"].ToString();
+
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var client = _httpClientFactory.CreateClient();
+                var jsonData = JsonConvert.SerializeObject(model);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var responseMessage = await client.PutAsync("https://localhost:7066/api/Product/", stringContent);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                return View(model);
             }
-            return View();
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
+            }
         }
         public async Task<IActionResult> IsActiveApproved(int id)
         {

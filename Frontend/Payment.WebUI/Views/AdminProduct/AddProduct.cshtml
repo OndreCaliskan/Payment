@@ -4,43 +4,65 @@
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
     var categories = ViewBag.Categories as IEnumerable<dynamic>;
 }
-<form method="post" enctype="multipart/form-data"  asp-action="AddProduct">
-    <label>Ürün İsmi</label>
-    <input type="text" asp-for="Title" class="form-control" />
+<form method="post" enctype="multipart/form-data" asp-action="AddProduct">
+
+    <div>
+        <input type="text" asp-for="Title" class="form-control" placeholder="Ürün Adı" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
     <br />
+
     <div class="form-group">
         <label for="CategoryId">Kategori</label>
         <select id="CategoryId" name="CategoryId" class="form-control">
-            @foreach (var category in categories)
+            @foreach (var category in ViewBag.Categories)
             {
-                <option value="@category.Id">@category.Name</option>
+                <option selected value="@category.Id">@category.Name</option>
             }
         </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
-    <label>Açıklama</label>
-    <input type="text" asp-for="Description" class="form-control" />
     <br />
-    <label>Fiyat</label>
-    <input type="number" asp-for="Price" class="form-control" />
+
+    <div>
+        <input type="text" asp-for="Description" class="form-control" placeholder="Açıklama" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
     <br />
-    <label>İndirim Oranı</label>
-    <input type="number" asp-for="DiscountRate" class="form-control" />
+
+    <div>
+        <input type="number" asp-for="Price" class="form-control" placeholder="Fiyat" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
     <br />
-    <label>Stok Sayısı</label>
-    <input type="text" asp-for="Stock" class="form-control" />
+
+    <div>
+        <input type="number" asp-for="DiscountRate" class="form-control" placeholder="İndirim Oranı" />
+        <span asp-validation-for="DiscountRate" class="text-danger"></span>
+    </div>
     <br />
-    <label>Resim</label>
-    <input type="file" asp-for="File" class="form-control" />
+
+    <div>
+        <input type="text" asp-for="Stock" class="form-control" placeholder="Stok Sayısı" />
+        <span asp-validation-for="Stock" class="text-danger"></span>
+    </div>
     <br />
-    <label for="isActive">Aktif Mi?</label>
-    <input type="checkbox" id="isActive" name="isActive" value="true">
+
+    <div>
+        <input type="file" asp-for="File" class="form-control" accept=".jpg,.jpeg,.png" placeholder="Fotoğraf" />
+        <span asp-validation-for="File" class="text-danger"></span>
+    </div>
     <br />
-    <label>Oluşturma Tarihi</label>
-    <input type="date" asp-for="CreateTime" class="form-control" />
+
+    <div>
+        <label for="isActive">Aktif Mi?</label><br>
+        <input type="radio" id="isActiveYes" name="isActive" value="true">
+        <label for="isActiveYes">Evet</label><br>
+        <input type="radio" id="isActiveNo" name="isActive" value="false">
+        <label for="isActiveNo">Hayır</label>
+    </div>
     <br />
-    <label>Oluşturan Kullanıcı</label>
-    <input type="text" asp-for="CreateUser" class="form-control" />
-    <br />
+
     <button class="btn btn-primary">Ürünü Ekle</button>
 </form>
 
