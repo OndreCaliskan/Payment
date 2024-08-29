@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Payment.DtoLayer.Dtos.RegisterDtos;
 
@@ -10,12 +9,10 @@ namespace Payment.WebApi.Controllers
     public class UserRegisterController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly IEmailSender _emailSender;
 
-        public UserRegisterController(UserManager<AppUser> userManager, IEmailSender emailSender)
+        public UserRegisterController(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
         }
 
 
@@ -42,7 +39,11 @@ namespace Payment.WebApi.Controllers
             if (registerDto.Password != registerDto.ConfirmPassword)
                 return BadRequest("Şifre Eşleşmiyor");
 
-            return BadRequest("Kullanıcı oluşturma işlemi başarısız oldu");
+            var result = await _userManager.CreateAsync(appUser, registerDto.Password);
+            if (result.Succeeded)
+                return Ok("User created successfully");
+
+            return BadRequest("User creation failed");
         }
     }
 }
