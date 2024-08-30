@@ -19,31 +19,78 @@ namespace Payment.DataAccessLayer.EntityFramework
 
         }
 
+        public List<ProductDto> GetLast3Product()
+        {
+            var context = new Context();
+            var values = context.Products.Include(x => x.Category).OrderByDescending(x => x.ProductID).Take(3).Select(y => new ProductDto
+            {
+                ProductID = y.ProductID,
+                CategoryName = y.Category.Name,
+                CategoryId = y.Category.Id,
+                Title = y.Title,
+                Description = y.Description,
+                Price = y.Price,
+                DiscountRate = y.DiscountRate,
+                Stock = y.Stock,
+                CoverImage = y.CoverImage,
+                Rating = y.Rating,
+                IsActive = y.IsActive,
+                CreateTime = y.CreateTime,
+                UpdateTime = y.UpdateTime,
+                CreateUser = y.CreateUser,
+                UpdateUser = y.UpdateUser
+            }).ToList();
+            return values;
+        }
+
         public List<ProductDto> GetProductWithCategoryName()
         {
             var context = new Context();
             List<ProductDto> value = new List<ProductDto>();
-            //var values = context.Products.Include(x => x.Category).Select(y => new ProductDto
-            //{
-            //    ProductID = y.ProductID,
-            //    CategoryName = y.Category.Name,
-            //    CategoryId = y.Category.Id, 
-            //    Title=y.Title,
-            //    Description=y.Description,
-            //    Price=y.Price,
-            //    DiscountRate=y.DiscountRate,
-            //    Stock=y.Stock,
-            //    CoverImage=y.CoverImage,
-            //    Rating=y.Rating,
-            //    IsActive=y.IsActive,
-            //    CreateTime=y.CreateTime,
-            //    UpdateTime=y.UpdateTime,
-            //    CreateUser=y.CreateUser,
-            //    UpdateUser=y.UpdateUser,
+            var values = context.Products.Include(x => x.Category).Select(y => new ProductDto
+            {
+                ProductID = y.ProductID,
+                CategoryName = y.Category.Name,
+                CategoryId = y.Category.Id,
+                Title = y.Title,
+                Description = y.Description,
+                Price = y.Price,
+                DiscountRate = y.DiscountRate,
+                Stock = y.Stock,
+                CoverImage = y.CoverImage,
+                Rating = y.Rating,
+                IsActive = y.IsActive,
+                CreateTime = y.CreateTime,
+                UpdateTime = y.UpdateTime,
+                CreateUser = y.CreateUser,
+                UpdateUser = y.UpdateUser
 
-
-            //});
+            });
             return value;
+        }
+
+        public ProductDto GetProductWithCategoryNameById(int id)
+        {
+            var context = new Context();
+            var values = context.Products.Include(x => x.Category).Where(x => x.ProductID == id).Select(y => new ProductDto
+            {
+                ProductID = y.ProductID,
+                CategoryName = y.Category.Name,
+                CategoryId = y.Category.Id,
+                Title = y.Title,
+                Description = y.Description,
+                Price = y.Price,
+                DiscountRate = y.DiscountRate,
+                Stock = y.Stock,
+                CoverImage = y.CoverImage,
+                Rating = y.Rating,
+                IsActive = y.IsActive,
+                CreateTime = y.CreateTime,
+                UpdateTime = y.UpdateTime,
+                CreateUser = y.CreateUser,
+                UpdateUser = y.UpdateUser,
+            }).FirstOrDefault();
+            return values;
         }
 
         public string ProductIsActiveChange(int id)

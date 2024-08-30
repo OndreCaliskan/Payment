@@ -13,5 +13,7 @@ namespace Payment.BusinessLayer.Abstract
         string TProductIsActiveChange(int id);
         string TProductIsActiveChangeCancel(int id);
         List<ProductDto> TGetProductWithCategoryName();
+        List<ProductDto> TGetLast3Product();
+        ProductDto TGetProductWithCategoryNameById(int id);
     }
 }

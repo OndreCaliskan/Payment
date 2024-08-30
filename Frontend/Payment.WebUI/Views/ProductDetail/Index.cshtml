@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/_Layout.cshtml";
+}
+<main class="main">
+
+    @await Component.InvokeAsync("_ProductDetailPageTitlePartial")
+
+
+    <!-- Courses Course Details Section -->
+    <section id="courses-course-details" class="courses-course-details section">
+
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                @await Component.InvokeAsync("_ProductDetailPartial", new { id = ViewBag.Id })
+            </div>
+
+        </div>
+
+    </section><!-- /Courses Course Details Section -->
+    <!-- Tabs Section -->
+    @await Component.InvokeAsync("_ProductDetailTabsSectionPartial", new { id = ViewBag.Id })
+
+</main>
+

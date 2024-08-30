@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Payment.WebUI.DTOs.AddressDto;
+using Payment.WebUI.DTOs.ProductDetailDtos;
 using System.Text;
 
 namespace Payment.WebUI.Controllers
 {
-    public class AdminAddressController : Controller
+    public class AdminProductDetailController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public AdminAddressController(IHttpClientFactory httpClientFactory)
+        public AdminProductDetailController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
@@ -17,56 +17,56 @@ namespace Payment.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient("");
-            var responseMessage = await client.GetAsync("https://localhost:7066/api/Address/AddressListWithUserName");
+            var responseMessage = await client.GetAsync("https://localhost:7066/api/ProductDetail");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var result = await responseMessage.Content.ReadAsStringAsync();
-                var Addresss = JsonConvert.DeserializeObject<List<AddressWithUsernameDto>>(result);
-                return View(Addresss);
+                var ProductDetails = JsonConvert.DeserializeObject<List<ResultProductDetailDto>>(result);
+                return View(ProductDetails);
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult CreateAddress()
+        public IActionResult CreateProductDetail()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAddress(CreateAddressDto createAddressDto)
+        public async Task<IActionResult> CreateProductDetail(CreateProductDetailDto createProductDetailDto)
         {
             var client = _httpClientFactory.CreateClient("");
-            var content = new StringContent(JsonConvert.SerializeObject(createAddressDto), Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7066/api/Address", content);
+            var content = new StringContent(JsonConvert.SerializeObject(createProductDetailDto), Encoding.UTF8, "application/json");
+            var responseMessage = await client.PostAsync("https://localhost:7066/api/ProductDetail", content);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
-            return View(createAddressDto);
+            return View(createProductDetailDto);
         }
 
         [HttpGet]
-        public async Task<IActionResult> UpdateAddress(int id)
+        public async Task<IActionResult> UpdateProductDetail(int id)
         {
             var client = _httpClientFactory.CreateClient("");
-            var responseMessage = await client.GetAsync($"https://localhost:7066/api/Address/{id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7066/api/ProductDetail/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var value = JsonConvert.DeserializeObject<UpdateAddressDto>(jsonData);
+                var value = JsonConvert.DeserializeObject<UpdateProductDetailDto>(jsonData);
                 return View(value);
             }
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateAddress(UpdateAddressDto updateAddressDto)
+        public async Task<IActionResult> UpdateProductDetail(UpdateProductDetailDto updateProductDetailDto)
         {
             var client = _httpClientFactory.CreateClient("");
-            var jsonData = JsonConvert.SerializeObject(updateAddressDto);
+            var jsonData = JsonConvert.SerializeObject(updateProductDetailDto);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7066/api/Address", content);
+            var responseMessage = await client.PutAsync("https://localhost:7066/api/ProductDetail", content);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -74,11 +74,11 @@ namespace Payment.WebUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> DeleteAddress(int id)
+        public async Task<IActionResult> DeleteProductDetail(int id)
         {
 
             var client = _httpClientFactory.CreateClient("");
-            var responseMessage = await client.DeleteAsync($"https://localhost:7066/api/Address/{id}");
+            var responseMessage = await client.DeleteAsync($"https://localhost:7066/api/ProductDetail/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");

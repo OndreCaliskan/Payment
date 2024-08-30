@@ -1,17 +1,11 @@
 using Payment.DataAccessLayer.Concrete;
 using Payment.EntityLayer.Concrete;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Payment.WebUI.Models.Mail;
 using Payment.BusinessLayer.Abstract;
 using Payment.BusinessLayer.Concrete;
 using Payment.DataAccessLayer.Abstract;
 using Payment.DataAccessLayer.EntityFramework;
 using FluentValidation.AspNetCore;
-using FluentValidation;
-using Payment.WebUI.DTOs.CategoryDtos;
-using Payment.WebUI.ValidationRules.CategoryValidationRules;
 using System.Globalization;
 
 

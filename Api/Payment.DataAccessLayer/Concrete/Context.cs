@@ -4,7 +4,7 @@ using Payment.EntityLayer.Concrete;
 
 namespace Payment.DataAccessLayer.Concrete
 {
-    public class Context : IdentityDbContext<AppUser,AppRole,int>
+    public class Context : IdentityDbContext<AppUser, AppRole, int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -15,5 +15,6 @@ namespace Payment.DataAccessLayer.Concrete
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductDetail> ProductDetails { get; set; }
     }
 }

@@ -18,13 +18,13 @@ namespace Payment.WebUI.Controllers
     public class AdminProductController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ICategoryService _categoryService;
+        private readonly IProductService _productService;
 
 
-        public AdminProductController(IHttpClientFactory httpClientFactory)
+        public AdminProductController(IHttpClientFactory httpClientFactory, IProductService productService)
         {
             _httpClientFactory = httpClientFactory;
-
+            _productService = productService;
         }
 
         public async Task<IActionResult> Index()
@@ -50,6 +50,8 @@ namespace Payment.WebUI.Controllers
             // Context yerine dependency injection kullanarak veri erişimi yapın
             using (var context = new Context())
             {
+                var catagoryNameses = _productService.TGetProductWithCategoryName();
+
                 var categoryNames = context.Categories // Kategoriler tablosunu kullanın
                     .Select(x => new
                     {

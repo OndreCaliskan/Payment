@@ -59,5 +59,15 @@ namespace Payment.BusinessLayer.Concrete
             var values = _productDal.GetProductWithCategoryName();
             return values;
         }
+
+        public List<ProductDto> TGetLast3Product()
+        {
+            return _productDal.GetLast3Product();
+        }
+
+        public ProductDto TGetProductWithCategoryNameById(int id)
+        {
+            return _productDal.GetProductWithCategoryNameById(id);
+        }
     }
 }

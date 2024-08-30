@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Payment.DataAccessLayer.Concrete;
 
@@ -11,9 +12,11 @@ using Payment.DataAccessLayer.Concrete;
 namespace Payment.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240829160037_updateProductDetail")]
+    partial class updateProductDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -498,11 +501,13 @@ namespace Payment.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Payment.EntityLayer.Concrete.ProductDetail", b =>
                 {
-                    b.HasOne("Payment.EntityLayer.Concrete.Product", null)
+                    b.HasOne("Payment.EntityLayer.Concrete.Product", "Product")
                         .WithOne("ProductDetail")
                         .HasForeignKey("Payment.EntityLayer.Concrete.ProductDetail", "ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AppUser", b =>

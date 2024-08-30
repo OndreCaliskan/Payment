@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Payment.DataAccessLayer.Concrete;
 
@@ -11,9 +12,11 @@ using Payment.DataAccessLayer.Concrete;
 namespace Payment.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240829140627_addProductDetail")]
+    partial class addProductDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -417,8 +420,7 @@ namespace Payment.DataAccessLayer.Migrations
 
                     b.HasKey("ProductDetailID");
 
-                    b.HasIndex("ProductID")
-                        .IsUnique();
+                    b.HasIndex("ProductID");
 
                     b.ToTable("ProductDetails");
                 });
@@ -498,21 +500,18 @@ namespace Payment.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Payment.EntityLayer.Concrete.ProductDetail", b =>
                 {
-                    b.HasOne("Payment.EntityLayer.Concrete.Product", null)
-                        .WithOne("ProductDetail")
-                        .HasForeignKey("Payment.EntityLayer.Concrete.ProductDetail", "ProductID")
+                    b.HasOne("Payment.EntityLayer.Concrete.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AppUser", b =>
                 {
                     b.Navigation("Addresses");
-                });
-
-            modelBuilder.Entity("Payment.EntityLayer.Concrete.Product", b =>
-                {
-                    b.Navigation("ProductDetail");
                 });
 #pragma warning restore 612, 618
         }

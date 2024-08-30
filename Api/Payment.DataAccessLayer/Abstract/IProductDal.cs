@@ -13,5 +13,7 @@ namespace Payment.DataAccessLayer.Abstract
         string ProductIsActiveChange(int id);
         string ProductIsActiveChangeCancel(int id);
         List <ProductDto> GetProductWithCategoryName();
+        List<ProductDto> GetLast3Product();
+        ProductDto GetProductWithCategoryNameById(int id);
     }
 }
