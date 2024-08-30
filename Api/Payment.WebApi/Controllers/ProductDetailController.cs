@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Payment.BusinessLayer.Abstract;
 using Payment.DtoLayer.Dtos.ProductDetailDtos;
@@ -12,11 +13,13 @@ namespace Payment.WebApi.Controllers
     {
         private readonly IProductDetailService _productDetailService;
         private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ProductDetailController(IProductDetailService productDetailService, IMapper mapper)
+        public ProductDetailController(IProductDetailService productDetailService, IMapper mapper, UserManager<AppUser> userManager)
         {
             _productDetailService = productDetailService;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -52,13 +55,19 @@ namespace Payment.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProductDetail(CreateProductDetailDto createProductDetailDto)
         {
+            var user = await _userManager.GetUserAsync(User);
+            createProductDetailDto.CreateUser = user.UserName;
+            createProductDetailDto.UpdateUser = user.UserName;
+            createProductDetailDto.CreateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
+            createProductDetailDto.UpdateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
+            createProductDetailDto.IsActive = true;
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var existingProduct = _productDetailService.TGetByID(createProductDetailDto.ProductID);
             if (existingProduct != null)
                 return Conflict("A detail for this product already exists.");
-
+            
             var value = _mapper.Map<ProductDetail>(createProductDetailDto);
             _productDetailService.TInsert(value);
             return Ok("ProductDetail added.");
@@ -67,6 +76,9 @@ namespace Payment.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateProductDetail(UpdateProductDetailDto updateProductDetailDto)
         {
+            var user = await _userManager.GetUserAsync(User);
+            updateProductDetailDto.UpdateUser = user.UserName;
+            updateProductDetailDto.UpdateTime = DateTime.Parse(DateTime.UtcNow.ToShortDateString());
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var value = _productDetailService.TGetByID(updateProductDetailDto.ProductDetailID);

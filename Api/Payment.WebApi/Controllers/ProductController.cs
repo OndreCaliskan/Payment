@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Payment.BusinessLayer.Abstract;
-using Payment.EntityLayer.Concrete;
 
 namespace Payment.WebApi.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -17,60 +14,26 @@ namespace Payment.WebApi.Controllers
         {
             _productService = productService;
         }
-        [HttpGet("IsActiveAproved")]
-        public IActionResult IsActiveAproved(int id)
-        {
-            _productService.TProductIsActiveChange(id);
-            return Ok();
-        }
-        [HttpGet("IsActiveAprovedCancel")]
-        public IActionResult IsActiveAprovedCancel(int id)
-        {
-            _productService.TProductIsActiveChangeCancel(id);
-            return Ok();
-        }
-        [HttpGet("GetProductWithCategoryName")]
-        public IActionResult GetProductWithCategoryName()
-        {
-            var values = _productService.TGetProductWithCategoryName();
-            return Ok(values);
-        }
-
-   
-
-
 
         [HttpGet]
-        public IActionResult ProductList()
+        public IActionResult GetLast3Product()
         {
-            var values = _productService.TGetList();
-            return Ok(values);
-        }
-        [HttpPost]
-        public IActionResult AddProduct(Product product)
-        {
-            _productService.TInsert(product);
-            return Ok();
-        }
-        [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
-        {
-            var values = _productService.TGetByID(id);
-            _productService.TDelete(values);
-            return Ok();
-        }
-        [HttpPut]
-        public IActionResult UpdateProduct(Product product)
-        {
-            _productService.TUpdate(product);
-            return Ok();
-        }
-        [HttpGet("{id}")]
-        public IActionResult GetProduct(int id)
-        {
-            var values = _productService.TGetByID(id);
+            var values = _productService.TGetLast3Product();
             return Ok(values);
         }
 
+        [HttpGet("GetProductWithCategoryNameById")]
+        public IActionResult GetProductWithCategoryNameById(int id)
+        {
+            var values = _productService.TGetProductWithCategoryNameById(id);
+            return Ok(values);
+        }
+
+        [HttpGet("GetTopThreeProductsByRating")]
+        public IActionResult GetTopThreeProductsByRating()
+        {
+            var values = _productService.TGetTopThreeProductsByRating();
+            return Ok(values);
+        }
     }
 }

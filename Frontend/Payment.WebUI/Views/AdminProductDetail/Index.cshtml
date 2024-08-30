@@ -1,0 +1,40 @@
+﻿@model List<ResultProductDetailDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>ProductInfo </th>
+        <th>ProductID </th>
+        <th>Posta Kodu </th>
+        <th>Oluşturulma Zamanı </th>
+        <th>Güncellenme Zamanı </th>
+        <th>Oluşturan Kullanıcı </th>
+        <th>Güncelleyen Kullanıcı </th>
+        <th>Kullanıcı Adı Soyadı </th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>@item.ProductDetailID</th>
+            <td>@item.Description</td>
+            <td>@item.ProductInfo</td>
+            <td>@item.ProductID</td>
+            <td>@item.IsActive</td>
+            <td>@item.CreateTime.ToShortDateString()</td>
+            <td>@item.UpdateTime.ToShortDateString()</td>
+            <td>@item.CreateUser</td>
+            <td>@item.UpdateUser</td>
+            <td><a href="/AdminProductDetail/DeleteProductDetail/@item.ProductDetailID" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
+            <td><a href="/AdminProductDetail/UpdateProductDetail/@item.ProductDetailID" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
+        </tr>
+    }
+</table>
+<a href="/AdminProductDetail/CreateProductDetail/" class="btn mb-1 btn-rounded btn-outline-info">Yeni ProductDetail Girişi</a>

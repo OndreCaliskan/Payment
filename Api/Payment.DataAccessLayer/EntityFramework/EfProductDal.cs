@@ -93,6 +93,30 @@ namespace Payment.DataAccessLayer.EntityFramework
             return values;
         }
 
+        public List<ProductDto> GetTopThreeProductsByRating()
+        {
+            var context = new Context();
+            var values = context.Products.Include(x => x.Category).Where(x => x.IsActive == true).OrderByDescending(x => x.Rating).Take(3).Select(y => new ProductDto
+            {
+                ProductID = y.ProductID,
+                CategoryName = y.Category.Name,
+                CategoryId = y.Category.Id,
+                Title = y.Title,
+                Description = y.Description,
+                Price = y.Price,
+                DiscountRate = y.DiscountRate,
+                Stock = y.Stock,
+                CoverImage = y.CoverImage,
+                Rating = y.Rating,
+                IsActive = y.IsActive,
+                CreateTime = y.CreateTime,
+                UpdateTime = y.UpdateTime,
+                CreateUser = y.CreateUser,
+                UpdateUser = y.UpdateUser
+            }).ToList();
+            return values;
+        }
+
         public string ProductIsActiveChange(int id)
         {
             var context = new Context();

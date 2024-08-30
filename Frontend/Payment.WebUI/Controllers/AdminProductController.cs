@@ -42,7 +42,7 @@ namespace Payment.WebUI.Controllers
                     ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
 
                 }
-                var responseMessage = await client.GetAsync("https://localhost:7066/api/Product");
+                var responseMessage = await client.GetAsync("https://localhost:7066/api/AdminProduct");
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -98,7 +98,7 @@ namespace Payment.WebUI.Controllers
                 var client = _httpClientFactory.CreateClient();
                 var jsonData = JsonConvert.SerializeObject(model);
                 StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var responseMessage = await client.PostAsync("https://localhost:7066/api/Product/", stringContent);
+                var responseMessage = await client.PostAsync("https://localhost:7066/api/AdminProduct/", stringContent);
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index");
@@ -115,7 +115,7 @@ namespace Payment.WebUI.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7066/api/Product/{id}");
+            var responseMessage = await client.DeleteAsync($"https://localhost:7066/api/AdminProduct/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -140,7 +140,7 @@ namespace Payment.WebUI.Controllers
                 ViewBag.Categories = categoryNames;
             }
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7066/api/Product/{id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7066/api/AdminProduct/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -175,7 +175,7 @@ namespace Payment.WebUI.Controllers
                 var client = _httpClientFactory.CreateClient();
                 var jsonData = JsonConvert.SerializeObject(model);
                 StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var responseMessage = await client.PutAsync("https://localhost:7066/api/Product/", stringContent);
+                var responseMessage = await client.PutAsync("https://localhost:7066/api/AdminProduct/", stringContent);
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index");
@@ -192,7 +192,7 @@ namespace Payment.WebUI.Controllers
         public async Task<IActionResult> IsActiveApproved(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7066/api/Product/IsActiveAproved?id={id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7066/api/AdminProduct/IsActiveAproved?id={id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -204,7 +204,7 @@ namespace Payment.WebUI.Controllers
         public async Task<IActionResult> IsActiveApprovedCancel(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7066/api/Product/IsActiveAprovedCancel?id={id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7066/api/AdminProduct/IsActiveAprovedCancel?id={id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");

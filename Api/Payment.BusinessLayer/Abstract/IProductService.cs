@@ -15,5 +15,6 @@ namespace Payment.BusinessLayer.Abstract
         List<ProductDto> TGetProductWithCategoryName();
         List<ProductDto> TGetLast3Product();
         ProductDto TGetProductWithCategoryNameById(int id);
+        List<ProductDto> TGetTopThreeProductsByRating();
     }
 }

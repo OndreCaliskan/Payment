@@ -2,11 +2,6 @@
 using Payment.DataAccessLayer.Abstract;
 using Payment.DtoLayer.Dtos.ProductDtos;
 using Payment.EntityLayer.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Payment.BusinessLayer.Concrete
 {
@@ -68,6 +63,11 @@ namespace Payment.BusinessLayer.Concrete
         public ProductDto TGetProductWithCategoryNameById(int id)
         {
             return _productDal.GetProductWithCategoryNameById(id);
+        }
+
+        public List<ProductDto> TGetTopThreeProductsByRating()
+        {
+            return _productDal.GetTopThreeProductsByRating();
         }
     }
 }
