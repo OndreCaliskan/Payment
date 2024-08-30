@@ -1,21 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Payment.DataAccessLayer.Concrete;
 using Payment.WebUI.DTOs.ProductDtos;
+using System.Net.Http;
 
 namespace Payment.WebUI.ViewComponents.Home
 {
     public class _HomeCoursesPartial : ViewComponent
     {
         private readonly IHttpClientFactory _httpClientFactory;
-
         public _HomeCoursesPartial(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
-
-        public async Task< IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient("");
+            using (var context = new Context())
+            {
+                ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
+
+            }
+
+
+            var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7066/api/Product");
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -24,6 +31,8 @@ namespace Payment.WebUI.ViewComponents.Home
                 return View(values);
             }
             return View();
+
+
         }
     }
 }

@@ -1,80 +1,48 @@
 ﻿@model List<ResultProductDto>
 
-@{
-    int delay = 0;
-}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses</title>
-
-    <!-- Bu bölümde stil tanımlamalarını yapıyoruz -->
-    <style>
-        .category-detail {
-            font-size: 14px; /* Kategori yazısı ile aynı font boyutu */
-            color: #5fcf80; /* Kategori yazısı ile aynı renk */
-            margin-left: 10px; /* İsteğe bağlı olarak aralarındaki boşluk */
-            margin-top: 15px; /* İsteğe bağlı olarak aralarındaki boşluk */
-            text-transform: uppercase; /* Eğer kategori yazısı uppercase ise bu satırı ekleyebilirsiniz */
-        }
-    </style>
-</head>
-<body>
-
-
-    <!-- Courses Section -->
-    <section id="courses" class="courses section">
-
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-            <h2>Courses</h2>
-            <p>Popular Courses</p>
-        </div><!-- End Section Title -->
+<section id="courses" class="courses section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Ürünler</h2>
+        <p>Popüler Ürünler</p>
+    </div>
 
         <div class="container">
 
-            <div class="row">
-                @foreach (var item in Model)
-                {
-                    delay += 100;
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="delay">
-                        <div class="course-item">
-                            <img src="@item.CoverImage" class="img-fluid" alt="...">
-                            @* <img src="~/Mentor/assets/img/course-1.jpg" class="img-fluid" alt="..."> *@
-                            <div class="course-content">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <p class="category">@item.CategoryName</p>
-                                    <p class="price">@item.Price</p>
-                                </div>
-
-                                <h3><a asp-controller="Courses" asp-action="CoursesDetails">@item.Title</a></h3>
-                                <p class="description">@item.Description</p>
-                                <div class="trainer d-flex justify-content-between align-items-center">
-                                    <div class="trainer-profile d-flex align-items-center">
-                                        <img src="~/Mentor/assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
-                                        <a href="" class="trainer-link">@item.CreateUser</a>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <p class="category">
-                                                <a href="/ProductDetail/Index/@item.ProductID">Detail</a>
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </div>
+        <div class="coursesrow">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="course-item">
+                        <img src="@item.CoverImage" class="img-fluid alt="...">
+                        <div class="course-content">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <p class="category">   <td>@ViewBag.CategoryName[item.CategoryId]</td></p>
+                                <p class="price">@item.Price</p>
                             </div>
-                        </div>
-                    </div> <!-- End Course Item-->
-                }
 
+                            <h3><a asp-controller="Courses" asp-action="CoursesDetails">@item.Title</a></h3>
+                            <p class="description">@item.Description</p>
+                            <div class="trainer d-flex justify-content-between align-items-center">
+                                <div class="trainer-profile d-flex align-items-center">
+                                    <a href="" class="category">Sepete Ekle</a>
+                                </div>
+                                <div class="trainer-rank d-flex align-items-center">
+                                    <i class="bi bi-person user-icon"></i>&nbsp;@item.Rating
+                                 
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div> <!-- End Course Item-->
+            }
 
             </div>
 
         </div>
 
-    </section><!-- /Courses Section -->
-
-</body>
-</html>
+</section><!-- /Courses Section -->,
