@@ -13,14 +13,14 @@
             {
                 <div class="col-lg-4 col-md-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
                     <div class="course-item">
-                        <img src="@item.CoverImage" class="img-fluid alt="...">
+                        <img src="@item.CoverImage" class="coursimg-fluid" alt="...">
                         <div class="course-content">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <p class="category">   <td>@ViewBag.CategoryName[item.CategoryId]</td></p>
                                 <p class="price">@item.Price</p>
                             </div>
 
-                            <h3><a asp-controller="Courses" asp-action="CoursesDetails">@item.Title</a></h3>
+                            <a href="/ProductDetail/Index/@item.ProductID">@item.Title</a>
                             <p class="description">@item.Description</p>
                             <div class="trainer d-flex justify-content-between align-items-center">
                                 <div class="trainer-profile d-flex align-items-center">

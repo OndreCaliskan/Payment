@@ -19,7 +19,7 @@ namespace Payment.WebUI.ViewComponents.ProductDetail
         {
             var coverImage = "";
             var client = _clientFactory.CreateClient("");
-            var responseMessageProduct= await client.GetAsync($"https://localhost:7066/api/ProductHome/GetProductWithCategoryNameById?id={id}");
+            var responseMessageProduct= await client.GetAsync($"https://localhost:7066/api/Product/GetProductWithCategoryNameById?id={id}");
             if (responseMessageProduct.IsSuccessStatusCode)
             {
                 var contentProduct = await responseMessageProduct.Content.ReadAsStringAsync();
@@ -27,6 +27,7 @@ namespace Payment.WebUI.ViewComponents.ProductDetail
                 coverImage = product.CoverImage;
             }
 
+            /**/
             var responseMessage = await client.GetAsync($"https://localhost:7066/api/ProductDetail/GetProductDetailByProductId?productId={id}");
             if (responseMessage.IsSuccessStatusCode)
             {

@@ -30,14 +30,6 @@ namespace Payment.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            using (var context = new Context())
-            {
-                ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
-
-            }
-
-
             var client = _httpClientFactory.CreateClient();
             var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
             if (responseMessage2.IsSuccessStatusCode)
@@ -65,9 +57,12 @@ namespace Payment.WebUI.Controllers
         [HttpGet]
         public IActionResult AddProduct()
         {
+            // Context yerine dependency injection kullanarak veri erişimi yapın
             using (var context = new Context())
             {
-                var categoryNames = context.Categories 
+                var catagoryNameses = _productService.TGetProductWithCategoryName();
+
+                var categoryNames = context.Categories // Kategoriler tablosunu kullanın
                     .Select(x => new
                     {
                         x.Id,
@@ -75,7 +70,7 @@ namespace Payment.WebUI.Controllers
                     })
                     .ToList();
 
-               
+                // Kategori isimlerini ve Id'lerini ViewBag'e aktarıyoruz
                 ViewBag.Categories = categoryNames;
             }
 
@@ -86,21 +81,10 @@ namespace Payment.WebUI.Controllers
         {
             try
             {
-                var categoryNames = context.Categories
-                    .Select(x => new
-                    {
-                        x.Id,
-                        x.Name
-                    })
-                    .ToList();
-
-                ViewBag.Categories = categoryNames;
-            }
-            if (model.File == null || model.File.Length == 0)
-            {
-                ModelState.AddModelError("File", "Lütfen bir dosya yükleyin.");
-                return View();
-            }
+                if (model.File != null)
+                {
+                    model.CoverImage = ImageHelper.SaveImage(model.File);
+                }
 
                 model.CreateTime = DateTime.Now;
                 model.UpdateTime = DateTime.Now;
@@ -144,7 +128,7 @@ namespace Payment.WebUI.Controllers
 
             using (var context = new Context())
             {
-                var categoryNames = context.Categories 
+                var categoryNames = context.Categories // Kategoriler tablosunu kullanın
                     .Select(x => new
                     {
                         x.Id,
@@ -152,7 +136,7 @@ namespace Payment.WebUI.Controllers
                     })
                     .ToList();
 
-                
+                // Kategori isimlerini ve Id'lerini ViewBag'e aktarıyoruz
                 ViewBag.Categories = categoryNames;
             }
             var client = _httpClientFactory.CreateClient();
