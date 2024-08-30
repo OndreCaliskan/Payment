@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Payment.BusinessLayer.Concrete;
 using Payment.WebUI.DTOs.LoginDtos;
 using System.Text;
 
@@ -8,10 +10,14 @@ namespace Payment.WebUI.Controllers
     public class LoginController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public LoginController(IHttpClientFactory httpClientFactory)
+        public LoginController(IHttpClientFactory httpClientFactory, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _httpClientFactory = httpClientFactory;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -38,11 +44,35 @@ namespace Payment.WebUI.Controllers
 
                 if (roles.Contains("Admin") || roles.Contains("Manager"))
                 {
-                    return RedirectToAction("Index", "AdminRole");
+                    return RedirectToAction("Index", "Profile");
                 }
                 return RedirectToAction("Index", "Home");
             }
-            return View();
+
+            var errorMessage = await responseMessage.Content.ReadAsStringAsync();
+            ViewBag.ErrorMessage = errorMessage;
+
+            var user = await _userManager.FindByNameAsync(loginDto.Username);
+            if (user == null)
+            {
+                TempData["message"] = "Yanlış mail ya da e-posta";
+                return RedirectToAction("Error", "Home");
+            }
+            else
+            {
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    TempData["message"] = "Mailinizi Onaylayın";
+                    return RedirectToAction("Error", "Home");
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(loginDto.Username, loginDto.Password, false, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Profile", "Home");
+                }
+            }
+            return View(loginDto);
         }
     }
 }

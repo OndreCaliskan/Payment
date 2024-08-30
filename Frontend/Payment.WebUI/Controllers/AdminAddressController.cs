@@ -24,7 +24,7 @@ namespace Payment.WebUI.Controllers
                 var Addresss = JsonConvert.DeserializeObject<List<AddressWithUsernameDto>>(result);
                 return View(Addresss);
             }
-            return View();
+            return RedirectToAction("Index","Login");
         }
 
         [HttpGet]
@@ -34,16 +34,16 @@ namespace Payment.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAddress(CreateAddressDto createAppAddressDto)
+        public async Task<IActionResult> CreateAddress(CreateAddressDto createAddressDto)
         {
             var client = _httpClientFactory.CreateClient("");
-            var content = new StringContent(JsonConvert.SerializeObject(createAppAddressDto), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(createAddressDto), Encoding.UTF8, "application/json");
             var responseMessage = await client.PostAsync("https://localhost:7066/api/Address", content);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
-            return View(createAppAddressDto);
+            return View(createAddressDto);
         }
 
         [HttpGet]
@@ -61,10 +61,10 @@ namespace Payment.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateAddress(UpdateAddressDto updateAppAddressDto)
+        public async Task<IActionResult> UpdateAddress(UpdateAddressDto updateAddressDto)
         {
             var client = _httpClientFactory.CreateClient("");
-            var jsonData = JsonConvert.SerializeObject(updateAppAddressDto);
+            var jsonData = JsonConvert.SerializeObject(updateAddressDto);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PutAsync("https://localhost:7066/api/Address", content);
             if (responseMessage.IsSuccessStatusCode)

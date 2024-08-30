@@ -10,6 +10,7 @@ using Payment.DtoLayer.Dtos.CategoryDtos;
 using Payment.EntityLayer.Concrete;
 using Payment.WebUI.DTOs.CategoryDtos;
 using Payment.WebUI.DTOs.ProductDtos;
+using Payment.WebUI.Helpers;
 using Payment.WebUI.Models;
 using System.Text;
 
@@ -18,13 +19,13 @@ namespace Payment.WebUI.Controllers
     public class AdminProductController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IProductService _productService;
 
 
-
-        public AdminProductController(IHttpClientFactory httpClientFactory)
+        public AdminProductController(IHttpClientFactory httpClientFactory, IProductService productService)
         {
             _httpClientFactory = httpClientFactory;
-
+            _productService = productService;
         }
 
         public async Task<IActionResult> Index()
@@ -38,14 +39,28 @@ namespace Payment.WebUI.Controllers
 
 
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7066/api/Product");
-            if (responseMessage.IsSuccessStatusCode)
+            var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
+            if (responseMessage2.IsSuccessStatusCode)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
-                return View(values);
+                var user = await responseMessage2.Content.ReadFromJsonAsync<AppUser>();
+                TempData["UserName"] = user.Name;
+
+                using (var context = new Context())
+                {
+                    ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
+
+                }
+                var responseMessage = await client.GetAsync("https://localhost:7066/api/Product");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                    var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
+                    return View(values);
+                }
+                return View();
             }
-            return View();
+            return RedirectToAction("Index", "Login");
+
         }
         [HttpGet]
         public IActionResult AddProduct()
@@ -69,7 +84,7 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(CreateProductDto model)
         {
-            using (var context = new Context())
+            try
             {
                 var categoryNames = context.Categories
                     .Select(x => new
@@ -87,53 +102,32 @@ namespace Payment.WebUI.Controllers
                 return View();
             }
 
-            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            string extension = Path.GetExtension(model.File.FileName).ToLower();
+                model.CreateTime = DateTime.Now;
+                model.UpdateTime = DateTime.Now;
+                model.CreateUser = TempData["UserName"].ToString();
 
-            if (!allowedExtensions.Contains(extension))
-            {
-                ModelState.AddModelError("File", "Sadece resim dosyaları yüklenebilir.");
-                return View();
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
+
+                var client = _httpClientFactory.CreateClient();
+                var jsonData = JsonConvert.SerializeObject(model);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var responseMessage = await client.PostAsync("https://localhost:7066/api/Product/", stringContent);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                return View(model);
             }
-
-
-            // Dosya kaydetme işlemi
-            string filename = Guid.NewGuid().ToString() + extension;
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", filename);
-
-            if (!Directory.Exists(Path.GetDirectoryName(path)))
+            catch (Exception ex)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
             }
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                model.File.CopyTo(stream);
-            }
-
-            model.CoverImage = "/img/" + filename;
-            model.CreateTime = DateTime.Now;
-            model.UpdateTime = DateTime.Now;
-
-
-
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(model);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7066/api/Product/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return View(model);
         }
-
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var client = _httpClientFactory.CreateClient();
@@ -174,79 +168,42 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(UpdateProductDto model)
         {
-
-            using (var context = new Context())
+            try
             {
-                var categoryNames = context.Categories
-                    .Select(x => new
-                    {
-                        x.Id,
-                        x.Name
-                    })
-                    .ToList();
-
-                ViewBag.Categories = categoryNames;
-            }
-
-            if (model.File == null || model.File.Length == 0)
-            {
-                ModelState.AddModelError("File", "Lütfen bir dosya yükleyin.");
-                return View();
-            }
-            if (model.File != null && model.File.Length > 0)
-            {
-                // Dosya uzantısını kontrol etme
-                string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                string extension = Path.GetExtension(model.File.FileName).ToLower();
-
-                if (!allowedExtensions.Contains(extension))
+                if (model.File != null)
                 {
-                    ModelState.AddModelError("File", "Sadece resim dosyaları yüklenebilir.");
+                    // Eski resmi silme işlemi
+                    ImageHelper.DeleteImage(model.CoverImage);
+
+                    // Yeni resmi kaydetme işlemi
+                    model.CoverImage = ImageHelper.SaveImage(model.File);
+                }
+
+                model.UpdateTime = DateTime.Now;
+                model.UpdateUser = TempData["UserName"].ToString();
+                model.CreateUser = TempData["UserName"].ToString();
+
+                if (!ModelState.IsValid)
+                {
                     return View(model);
                 }
 
-                // Mevcut resmi silme işlemi (eğer varsa)
-                if (!string.IsNullOrEmpty(model.CoverImage))
+                var client = _httpClientFactory.CreateClient();
+                var jsonData = JsonConvert.SerializeObject(model);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var responseMessage = await client.PutAsync("https://localhost:7066/api/Product/", stringContent);
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", model.CoverImage.TrimStart('/'));
-                    if (System.IO.File.Exists(oldImagePath))
-                    {
-                        System.IO.File.Delete(oldImagePath);
-                    }
+                    return RedirectToAction("Index");
                 }
 
-                // Yeni dosyayı kaydetme
-                string filename = Guid.NewGuid().ToString() + extension;
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", filename);
-
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    model.File.CopyTo(stream);
-                }
-
-                model.CoverImage = "/img/" + filename;
-            }
-
-            if (!ModelState.IsValid)
-            {
                 return View(model);
             }
-
-            model.UpdateTime = DateTime.Now;
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(model);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7066/api/Product/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
             }
-            return View();
         }
         public async Task<IActionResult> IsActiveApproved(int id)
         {

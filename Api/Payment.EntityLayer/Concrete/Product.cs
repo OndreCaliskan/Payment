@@ -30,5 +30,7 @@ namespace Payment.EntityLayer.Concrete
         public DateTime? UpdateTime { get; set; }
         public string CreateUser { get; set; }
         public string? UpdateUser { get; set; }
+
+        public ProductDetail? ProductDetail { get; set; }
     }
 }

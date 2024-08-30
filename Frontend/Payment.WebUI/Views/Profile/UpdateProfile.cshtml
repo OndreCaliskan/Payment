@@ -1,0 +1,58 @@
+﻿@model ResultAppUserDto
+
+@{
+    ViewData["Title"] = "UpdateProfile";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+    int id = ViewBag.UserID;
+}
+
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: center; /* Yatay ortalama */
+        align-items: center; /* Dikey ortalama */
+        min-height: 100vh; /* Ekranın tamamını kaplamak için */
+    }
+
+    .form-box {
+        width: 50%; /* Formun genişliği */
+        max-width: 500px; /* Maksimum genişlik */
+        padding: 20px; /* İç boşluk */
+        background-color: #f8f9fa; /* Arka plan rengi */
+        border-radius: 8px; /* Kenar yuvarlama */
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Gölgelendirme */
+    }
+</style>
+
+
+<div class="form-container">
+    <div class="form-box">
+        <form method="post">
+            <input type="hidden" asp-for="@id" />
+            <label>UserName</label>
+            <input type="text" asp-for="UserName" class="form-control" />
+            <br />
+            <label>Email</label>
+            <input type="text" asp-for="Email" class="form-control" />
+            <br />
+            <label>Name</label>
+            <input type="text" asp-for="Name" class="form-control" />
+            <br />
+            <label>Surname</label>
+            <input type="text" asp-for="Surname" class="form-control" />
+            <br />
+            <label>Phone</label>
+            <input type="number" asp-for="Phone" class="form-control" />
+            <br />
+            <label>CreateTime</label>
+            <input type="text" value="@Model.CreateTime.ToShortDateString()" class="form-control" readonly />
+            <br />
+            <label>UpdateTime</label>
+            <input type="text" value="@Model.UpdateTime.ToShortDateString()" class="form-control" readonly />
+            <br />
+            <button class="btn btn-primary">Profili Güncelle</button>
+        </form>
+    </div>
+</div>
+

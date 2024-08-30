@@ -1,19 +1,27 @@
 using Payment.DataAccessLayer.Concrete;
 using Payment.EntityLayer.Concrete;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Payment.WebUI.Models.Mail;
 using Payment.BusinessLayer.Abstract;
 using Payment.BusinessLayer.Concrete;
 using Payment.DataAccessLayer.Abstract;
 using Payment.DataAccessLayer.EntityFramework;
+using FluentValidation.AspNetCore;
+using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllersWithViews()
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<Program>();
+        fv.DisableDataAnnotationsValidation = true;
+        fv.ValidatorOptions.LanguageManager.Culture = new CultureInfo("tr");
+    });
 
 builder.Services.AddScoped<Payment.WebUI.Models.Mail.IEmailSender, SmtpEmailSender>(i =>
     new SmtpEmailSender(
@@ -36,6 +44,7 @@ builder.Services.AddControllers().AddXmlSerializerFormatters();
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddAutoMapper(typeof(Program));
+
 
 builder.Services.AddHttpClient();
 

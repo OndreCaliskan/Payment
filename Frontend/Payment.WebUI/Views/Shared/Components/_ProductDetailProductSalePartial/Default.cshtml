@@ -1,0 +1,35 @@
+﻿@model ResultProductDto
+
+@{
+    var discountRate = Model.DiscountRate;
+    var discountedPrice = Model.Price - (Model.Price * discountRate / 100);
+}
+<div class="col-lg-4">
+
+
+    <div class="course-info d-flex justify-content-between align-items-center">
+        <h5>Title</h5>
+        <p>@Model.Title</p>
+    </div>
+
+    <div class="course-info d-flex justify-content-between align-items-center">
+        <h5>Price</h5>
+        <p>@Model.Price</p>
+    </div>
+
+    <div class="course-info d-flex justify-content-between align-items-center">
+        <h5>Discount Rate</h5>
+        <p>@Model.DiscountRate</p>
+    </div>
+
+    <div class="course-info d-flex justify-content-between align-items-center">
+        <h5>Discounted Price</h5>
+        <p>@discountedPrice</p>
+    </div>
+
+    <div class="course-info d-flex justify-content-between align-items-center">
+        <h5>Stok Amount</h5>
+        <p>@Model.Stock</p>
+    </div>
+
+</div>
