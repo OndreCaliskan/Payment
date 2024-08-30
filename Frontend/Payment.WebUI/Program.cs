@@ -7,6 +7,8 @@ using Payment.DataAccessLayer.Abstract;
 using Payment.DataAccessLayer.EntityFramework;
 using FluentValidation.AspNetCore;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,8 +42,9 @@ builder.Services.AddControllers().AddXmlSerializerFormatters();
 
 
 builder.Services.AddDbContext<Context>();
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 builder.Services.AddAutoMapper(typeof(Program));
+
 
 builder.Services.AddHttpClient();
 

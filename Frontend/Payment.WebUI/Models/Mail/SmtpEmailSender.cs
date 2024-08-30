@@ -36,3 +36,4 @@ namespace Payment.WebUI.Models.Mail
         }
     }
 }
+
