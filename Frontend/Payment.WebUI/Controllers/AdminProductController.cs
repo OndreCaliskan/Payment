@@ -29,6 +29,14 @@ namespace Payment.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            using (var context = new Context())
+            {
+                ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
+
+            }
+
+
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7066/api/Product");
             if (responseMessage.IsSuccessStatusCode)
@@ -42,26 +50,6 @@ namespace Payment.WebUI.Controllers
         [HttpGet]
         public IActionResult AddProduct()
         {
-            // Context yerine dependency injection kullanarak veri erişimi yapın
-            using (var context = new Context())
-            {
-                var categoryNames = context.Categories // Kategoriler tablosunu kullanın
-                    .Select(x => new
-                    {
-                        x.Id,
-                        x.Name
-                    })
-                    .ToList();
-
-                // Kategori isimlerini ve Id'lerini ViewBag'e aktarıyoruz
-                ViewBag.Categories = categoryNames;
-            }
-
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddProduct(CreateProductDto model)
-        {
             using (var context = new Context())
             {
                 var categoryNames = context.Categories 
@@ -72,7 +60,25 @@ namespace Payment.WebUI.Controllers
                     })
                     .ToList();
 
-       
+               
+                ViewBag.Categories = categoryNames;
+            }
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(CreateProductDto model)
+        {
+            using (var context = new Context())
+            {
+                var categoryNames = context.Categories
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Name
+                    })
+                    .ToList();
+
                 ViewBag.Categories = categoryNames;
             }
             if (model.File == null || model.File.Length == 0)
@@ -144,7 +150,7 @@ namespace Payment.WebUI.Controllers
 
             using (var context = new Context())
             {
-                var categoryNames = context.Categories // Kategoriler tablosunu kullanın
+                var categoryNames = context.Categories 
                     .Select(x => new
                     {
                         x.Id,
@@ -152,7 +158,7 @@ namespace Payment.WebUI.Controllers
                     })
                     .ToList();
 
-                // Kategori isimlerini ve Id'lerini ViewBag'e aktarıyoruz
+                
                 ViewBag.Categories = categoryNames;
             }
             var client = _httpClientFactory.CreateClient();

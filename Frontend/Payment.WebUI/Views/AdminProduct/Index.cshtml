@@ -3,6 +3,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
     int count = 0;
+    
 }
 
 <div class="card">
@@ -31,6 +32,7 @@
                     @foreach (var item in Model)
                     {
                         count++;
+                  
                         <tr>
                             <th>@count</th>
                             <td>
@@ -38,7 +40,7 @@
                             </td>
 
                             <td>@item.Title</td>
-                            <td>@item.CategoryName</td>
+                            <td>@ViewBag.CategoryName[item.CategoryId]</td>
                             <td>@item.Description</td>
                             <td>@item.Price</td>
                             <td>@item.DiscountRate</td>
@@ -79,5 +81,4 @@
 
 </div>
 <a href="/AdminProduct/AddProduct/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Ürün Girişi</a>
-        </div>
 
