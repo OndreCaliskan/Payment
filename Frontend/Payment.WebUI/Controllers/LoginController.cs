@@ -49,6 +49,9 @@ namespace Payment.WebUI.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            var errorMessage = await responseMessage.Content.ReadAsStringAsync();
+            ViewBag.ErrorMessage = errorMessage;
+
             var user = await _userManager.FindByNameAsync(loginDto.Username);
             if (user == null)
             {
@@ -69,10 +72,6 @@ namespace Payment.WebUI.Controllers
                     return RedirectToAction("Profile", "Home");
                 }
             }
-
-            return View();
-            var errorMessage = await responseMessage.Content.ReadAsStringAsync();
-            ViewBag.ErrorMessage = errorMessage;
             return View(loginDto);
         }
     }

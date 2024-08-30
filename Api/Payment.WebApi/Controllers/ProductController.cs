@@ -36,20 +36,8 @@ namespace Payment.WebApi.Controllers
             return Ok(values);
         }
 
-        [HttpGet("GetLast3Product")]
-        public IActionResult GetLast3Product()
-        {
-            var values = _productService.TGetLast3Product();
-            return Ok(values);
-        }
-        //GetProductWithCategoryNameById
+   
 
-        [HttpGet("GetProductWithCategoryNameById")]
-        public IActionResult GetProductWithCategoryNameById(int id)
-        {
-            var values = _productService.TGetProductWithCategoryNameById(id);
-            return Ok(values);
-        }
 
 
         [HttpGet]

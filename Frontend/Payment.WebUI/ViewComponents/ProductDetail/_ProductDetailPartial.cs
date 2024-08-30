@@ -17,7 +17,7 @@ namespace Payment.WebUI.ViewComponents.ProductDetail
         {
             ViewBag.Id = id;
             var client=_clientFactory.CreateClient("");
-            var responseMessage= await client.GetAsync($"https://localhost:7066/api/Product/GetProductWithCategoryNameById?id={id}");
+            var responseMessage= await client.GetAsync($"https://localhost:7066/api/ProductHome/GetProductWithCategoryNameById?id={id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var content = await responseMessage.Content.ReadAsStringAsync();

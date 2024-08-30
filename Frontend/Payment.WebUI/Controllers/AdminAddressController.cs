@@ -24,7 +24,7 @@ namespace Payment.WebUI.Controllers
                 var Addresss = JsonConvert.DeserializeObject<List<AddressWithUsernameDto>>(result);
                 return View(Addresss);
             }
-            return View();
+            return RedirectToAction("Index","Login");
         }
 
         [HttpGet]

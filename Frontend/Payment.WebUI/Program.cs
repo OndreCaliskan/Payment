@@ -42,7 +42,7 @@ builder.Services.AddControllers().AddXmlSerializerFormatters();
 
 
 builder.Services.AddDbContext<Context>();
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 
