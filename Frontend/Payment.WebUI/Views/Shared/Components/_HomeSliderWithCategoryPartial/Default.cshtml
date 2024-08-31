@@ -1,4 +1,4 @@
-﻿@model List<ResultCategoryDto>
+﻿@model List<ResultProductDto>
    <!-- Begin Slider With Category Menu Area -->
 <div class="slider-with-banner">
     <div class="container">
@@ -13,7 +13,7 @@
                     <div id="cate-toggle" class="category-menu-list">
                         <ul>
                           @foreach(var item in Model){
-                            <li><a href="#">@item.Name</a></li>
+                                <li><a href="#">@ViewBag.CategoryName[item.CategoryId]</a></li>
                           }
                         </ul>
                     </div>

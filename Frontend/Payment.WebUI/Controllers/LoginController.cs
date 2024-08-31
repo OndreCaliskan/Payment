@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Payment.BusinessLayer.Concrete;
@@ -7,6 +8,8 @@ using System.Text;
 
 namespace Payment.WebUI.Controllers
 {
+    [AllowAnonymous]
+
     public class LoginController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -36,6 +39,7 @@ namespace Payment.WebUI.Controllers
             var jsonData = JsonConvert.SerializeObject(loginDto);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PostAsync("https://localhost:7066/api/UserLogin", content);
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 var rolesResponse = await client.GetAsync($"https://localhost:7066/api/User/GetUserRoles?username={loginDto.Username}");
@@ -44,6 +48,8 @@ namespace Payment.WebUI.Controllers
 
                 if (roles.Contains("Admin") || roles.Contains("Manager"))
                 {
+                    // Admin veya Yönetici rolü kontrol ediliyor ve oturum açılıyor
+                    await _signInManager.SignInAsync(await _userManager.FindByNameAsync(loginDto.Username), false);
                     return RedirectToAction("Index", "Profile");
                 }
                 return RedirectToAction("Index", "Home");
@@ -52,6 +58,7 @@ namespace Payment.WebUI.Controllers
             var errorMessage = await responseMessage.Content.ReadAsStringAsync();
             ViewBag.ErrorMessage = errorMessage;
 
+            // Kullanıcı adı ile kullanıcı bilgisi alınıyor
             var user = await _userManager.FindByNameAsync(loginDto.Username);
             if (user == null)
             {
@@ -72,6 +79,7 @@ namespace Payment.WebUI.Controllers
                     return RedirectToAction("Profile", "Home");
                 }
             }
+
             return View(loginDto);
         }
     }

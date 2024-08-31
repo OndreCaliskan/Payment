@@ -4983,6 +4983,12 @@ span.required {
 .product-image > a img {
   width: 100%;
 }
+.product-image img {
+	width: 100%; /* Konteynerin geniþliðini tam doldurur */
+	height: 250px; /* Sabit bir yükseklik belirler */
+	display:flex;
+}
+
 .shop-products-wrapper .tab-content .tab-pane.active {
     display: block;
 }

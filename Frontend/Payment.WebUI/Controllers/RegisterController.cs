@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Payment.WebUI.DTOs.RegisterDtos;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace Payment.WebUI.Controllers
 {
+    [AllowAnonymous]
     public class RegisterController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;

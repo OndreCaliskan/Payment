@@ -6,7 +6,6 @@ using Payment.EntityLayer.Concrete;
 
 namespace Payment.WebApi.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminProductController : ControllerBase
