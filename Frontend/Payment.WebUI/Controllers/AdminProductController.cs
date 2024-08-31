@@ -32,7 +32,7 @@ namespace Payment.WebUI.Controllers
         {
             var client = _httpClientFactory.CreateClient();
             var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
-            if (responseMessage2.IsSuccessStatusCode)
+             if (responseMessage2.IsSuccessStatusCode)
             {
                 var user = await responseMessage2.Content.ReadFromJsonAsync<AppUser>();
                 TempData["UserName"] = user.Name;
@@ -57,12 +57,11 @@ namespace Payment.WebUI.Controllers
         [HttpGet]
         public IActionResult AddProduct()
         {
-            // Context yerine dependency injection kullanarak veri erişimi yapın
             using (var context = new Context())
             {
                 var catagoryNameses = _productService.TGetProductWithCategoryName();
 
-                var categoryNames = context.Categories // Kategoriler tablosunu kullanın
+                var categoryNames = context.Categories 
                     .Select(x => new
                     {
                         x.Id,
@@ -70,7 +69,6 @@ namespace Payment.WebUI.Controllers
                     })
                     .ToList();
 
-                // Kategori isimlerini ve Id'lerini ViewBag'e aktarıyoruz
                 ViewBag.Categories = categoryNames;
             }
 
@@ -79,8 +77,27 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(CreateProductDto model)
         {
-            try
+            using (var context = new Context())
             {
+                var catagoryNameses = _productService.TGetProductWithCategoryName();
+
+                var categoryNames = context.Categories
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Name
+                    })
+                    .ToList();
+
+                ViewBag.Categories = categoryNames;
+            }
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
+            if (responseMessage2.IsSuccessStatusCode)
+            {
+                var user = await responseMessage2.Content.ReadFromJsonAsync<AppUser>();
+                TempData["UserName"] = user.Name;
+
                 if (model.File != null)
                 {
                     model.CoverImage = ImageHelper.SaveImage(model.File);
@@ -95,7 +112,6 @@ namespace Payment.WebUI.Controllers
                     return View();
                 }
 
-                var client = _httpClientFactory.CreateClient();
                 var jsonData = JsonConvert.SerializeObject(model);
                 StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
                 var responseMessage = await client.PostAsync("https://localhost:7066/api/AdminProduct/", stringContent);
@@ -106,11 +122,11 @@ namespace Payment.WebUI.Controllers
 
                 return View(model);
             }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                return View(model);
-            }
+            return RedirectToAction("Index", "Login");
+
+
+           
+      
         }
         public async Task<IActionResult> DeleteProduct(int id)
         {

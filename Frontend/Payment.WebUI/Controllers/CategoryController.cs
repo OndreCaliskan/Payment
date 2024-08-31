@@ -44,8 +44,7 @@ namespace Payment.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategory(CreateCategoryDto createCategoryDto)
         {
-            try
-            {
+           
                 if (createCategoryDto.File != null)
                 {
                     createCategoryDto.ImagePath = ImageHelper.SaveImage(createCategoryDto.File);
@@ -71,12 +70,7 @@ namespace Payment.WebUI.Controllers
                 }
 
                 return View(createCategoryDto);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                return View(createCategoryDto);
-            }
+           
         }
 
         public async Task<IActionResult> DeleteCategory(int id)

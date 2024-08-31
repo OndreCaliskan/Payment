@@ -4,7 +4,7 @@
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
 
 }
-<form method="post" enctype="multipart/form-data" asp-action="UpdateProduct">
+<form method="post" enctype="multipart/form-data">
 
     <input type="hidden" asp-for="ProductID" class="form-control" />
 
@@ -33,7 +33,7 @@
     <br />
 
     <div>
-        <input type="number" asp-for="Price" class="form-control" placeholder="Fiyat" />
+        <input type="number" asp-for="Price" class="form-control" placeholder="Fiyat" step="0.01"/>
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
     <br />

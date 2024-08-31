@@ -4,7 +4,7 @@
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
     var categories = ViewBag.Categories as IEnumerable<dynamic>;
 }
-<form method="post" enctype="multipart/form-data" asp-action="AddProduct">
+<form method="post" enctype="multipart/form-data" >
 
     <div>
         <input type="text" asp-for="Title" class="form-control" placeholder="Ürün Adı" />
@@ -31,7 +31,7 @@
     <br />
 
     <div>
-        <input type="number" asp-for="Price" class="form-control" placeholder="Fiyat" />
+        <input type="text" asp-for="Price" class="form-control" placeholder="Fiyat" step="0.01"/>
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
     <br />
