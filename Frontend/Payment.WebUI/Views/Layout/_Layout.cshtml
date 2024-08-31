@@ -1,12 +1,16 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!doctype html>
+<html class="no-js" lang="zxx">
+    @await Component.InvokeAsync("_LayoutHeadPartial")
+<body>
+    <div class="body-wrapper">
+        @await Component.InvokeAsync("_LayoutHeaderPartial")
+        @await Component.InvokeAsync("_LayoutNavbarPartial")
 
-@await Component.InvokeAsync("_LayoutHeadPartial")
-@await Component.InvokeAsync("_LayoutNavbarPartial")
-<body class="index-page">
-            @RenderBody()
-    @await Component.InvokeAsync("_LayoutFooterPartial")
+        @RenderBody();
+
+        @await Component.InvokeAsync("_LayoutFooterPartial")
+    </div>
+
     @await Component.InvokeAsync("_LayoutScriptsPartial")
 </body>
-
 </html>

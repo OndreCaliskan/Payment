@@ -1,35 +1,26 @@
-﻿<header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-        <a href="index.html" class="logo d-flex align-items-center me-auto">
-            <!-- Uncomment the line below if you also wish to use an image logo -->
-            <!-- <img src="assets/img/logo.png" alt=""> -->
-            <h1 class="sitename">Mentor</h1>
-        </a>
-
-        <nav id="navmenu" class="navmenu">
-            <ul>
-                <li class="nav-item">
-                    <a class="nav-link" class="active" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a  class="nav-link" asp-controller="About" asp-action="Index">About</a>
-                </li> 
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Courses" asp-action="Index">Courses</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact</a>
-                </li>
-
-            </ul>
-            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-
-        <a class="btn-getstarted" asp-controller="Courses" asp-action="Index">Get Started</a>
-
+﻿   <!-- Begin Header Bottom Area -->
+<div class="header-bottom header-sticky d-none d-lg-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Begin Header Bottom Menu Area -->
+                <div class="hb-menu hb-menu-2 d-xl-block">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Shop" asp-action="Index">Shop</a>
+                            </li>
+                            <li><a asp-controller="About" asp-action="Index">About Us</a></li>
+                            <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- Header Bottom Menu Area End Here -->
+            </div>
+        </div>
     </div>
-</header>
+</div>
+<!-- Header Bottom Area End Here -->

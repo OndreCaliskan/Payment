@@ -1,27 +1,17 @@
-﻿@{
+﻿ @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Layout/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html lang="en">
 
 
-<body class="index-page">
+@await Component.InvokeAsync("_HomeSliderWithCategoryPartial")
+    <section class="product-area li-trending-product li-trending-product-2 pt-60 pb-45">
+        <div class="container">
+            <div class="row">
+            @await Component.InvokeAsync("_HomeBeginTabMenuPartial")
 
-    @await Component.InvokeAsync("_HomeHeroPartial")
-
-    @await Component.InvokeAsync("_HomeAboutPartial")
-
-    @await Component.InvokeAsync("_HomeCountsPartial")
-
-    @await Component.InvokeAsync("_HomeWhyUsPartial")
-
-    @await Component.InvokeAsync("_HomeFeaturesPartial")
-
-    @await Component.InvokeAsync("_HomeCoursesPartial")
-
-    @await Component.InvokeAsync("_HomeTrainersPartial")
-
-</body>
-
-</html>
+            @await Component.InvokeAsync("_HomeBeginFeaturedProductPartial")
+         
+            </div>
+        </div>
+    </section>

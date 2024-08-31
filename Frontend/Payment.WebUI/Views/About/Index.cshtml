@@ -3,23 +3,19 @@
     Layout = "~/Views/Layout/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="en">
+<body>
 
-<body class="about-page">
-
-
-    <main class="main">
-        @await Component.InvokeAsync("_AboutPageTitlePartial")
-
-        @await Component.InvokeAsync("_AboutUsSectionPartial")
-
-        @await Component.InvokeAsync("_AboutCountsPartial")
-
-        @await Component.InvokeAsync("_AboutTestimonialsPartial")
-
-    </main>
-
+    <div class="body-wrapper">
+        @await Component.InvokeAsync("_AboutUsBreadCrumbPartial")
+        <div class="about-us-wrapper pt-60 pb-40">
+            <div class="container">
+                <div class="row">
+                    @await Component.InvokeAsync("_AboutUsTextImagePartial")
+                </div>
+            </div>
+        </div>
+        @await Component.InvokeAsync("_AboutUsCounterupAreaPartial")
+        @await Component.InvokeAsync("_AboutUsTeamAreaPartial")
+    </div>
 </body>
 
-</html>
