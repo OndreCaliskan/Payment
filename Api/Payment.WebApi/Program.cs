@@ -55,6 +55,13 @@ builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IProductDetailDal, EfProductDetailDal>();
 builder.Services.AddScoped<IProductDetailService, ProductDetailManager>();
 
+builder.Services.AddScoped<IContactDal, EfContactDal>();
+builder.Services.AddScoped<IContactService, ContactManager>();
+
+builder.Services.AddScoped<ISubjectDal, EfSubjectDal>();
+builder.Services.AddScoped<ISubjectService, SubjectManager>();
+
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("PaymentApiCors", opts =>

@@ -16,5 +16,7 @@ namespace Payment.DataAccessLayer.Concrete
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Payment.DataAccessLayer.Concrete;
 
@@ -11,9 +12,11 @@ using Payment.DataAccessLayer.Concrete;
 namespace Payment.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240901103416_mig_contact1")]
+    partial class mig_contact1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -472,16 +475,16 @@ namespace Payment.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Subject", b =>
                 {
-                    b.Property<int>("SubjectID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SubjectID");
+                    b.HasKey("ID");
 
                     b.ToTable("Subjects");
                 });
@@ -551,7 +554,7 @@ namespace Payment.DataAccessLayer.Migrations
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Contact", b =>
                 {
                     b.HasOne("Payment.EntityLayer.Concrete.Subject", "Subject")
-                        .WithMany("Contacts")
+                        .WithMany()
                         .HasForeignKey("SubjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -587,11 +590,6 @@ namespace Payment.DataAccessLayer.Migrations
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Product", b =>
                 {
                     b.Navigation("ProductDetail");
-                });
-
-            modelBuilder.Entity("Payment.EntityLayer.Concrete.Subject", b =>
-                {
-                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Payment.DataAccessLayer.Concrete;
 
@@ -11,9 +12,11 @@ using Payment.DataAccessLayer.Concrete;
 namespace Payment.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240901110811_mig30")]
+    partial class mig30
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -359,12 +362,7 @@ namespace Payment.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubjectID")
-                        .HasColumnType("int");
-
                     b.HasKey("ContactID");
-
-                    b.HasIndex("SubjectID");
 
                     b.ToTable("Contacts");
                 });
@@ -472,16 +470,21 @@ namespace Payment.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Subject", b =>
                 {
-                    b.Property<int>("SubjectID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int?>("ContactID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SubjectID");
+                    b.HasKey("ID");
+
+                    b.HasIndex("ContactID");
 
                     b.ToTable("Subjects");
                 });
@@ -548,17 +551,6 @@ namespace Payment.DataAccessLayer.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("Payment.EntityLayer.Concrete.Contact", b =>
-                {
-                    b.HasOne("Payment.EntityLayer.Concrete.Subject", "Subject")
-                        .WithMany("Contacts")
-                        .HasForeignKey("SubjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Product", b =>
                 {
                     b.HasOne("Payment.EntityLayer.Concrete.Category", "Category")
@@ -579,19 +571,28 @@ namespace Payment.DataAccessLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Payment.EntityLayer.Concrete.Subject", b =>
+                {
+                    b.HasOne("Payment.EntityLayer.Concrete.Contact", "contact")
+                        .WithMany("Subject")
+                        .HasForeignKey("ContactID");
+
+                    b.Navigation("contact");
+                });
+
             modelBuilder.Entity("AppUser", b =>
                 {
                     b.Navigation("Addresses");
                 });
 
+            modelBuilder.Entity("Payment.EntityLayer.Concrete.Contact", b =>
+                {
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Product", b =>
                 {
                     b.Navigation("ProductDetail");
-                });
-
-            modelBuilder.Entity("Payment.EntityLayer.Concrete.Subject", b =>
-                {
-                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }
