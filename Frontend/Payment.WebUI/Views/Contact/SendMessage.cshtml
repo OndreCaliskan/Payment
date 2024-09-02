@@ -1,0 +1,32 @@
+﻿@model CreateContactDto
+<div class="col-lg-6 col-md-12 order-2 order-lg-1">
+    <div class="contact-form-content pt-sm-55 pt-xs-55">
+        <h3 class="contact-page-title">Tell Us Your Message</h3>
+        <div class="contact-form">
+            <form method="post" asp-action="SendMessage" asp-controller="Contact">
+                <div class="form-group">
+                    <label>Adınız Soyadınız</label>
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Ad Soyad" />
+                </div>
+                <div class="form-group">
+                    <label>Email </label>
+                    <input type="text" asp-for="Mail" class="form-control" placeholder="Mail" />
+                </div>
+                <div class="form-floating">
+                    @Html.DropDownListFor(x => x.SubjectID, (List<SelectListItem>)ViewBag.v, new { @class = "form-control" })
+                    <label for="subject">Konuyu Seçiniz</label>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Mesajnızı Buraya Yazabilirsiniz" asp-for="Message"  style="height: 150px"></textarea>
+                        <label for="message">Mesajınız</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" value="submit" id="submit" class="li-btn-3" name="submit">Gönder</button>
+                </div>
+            </form>
+        </div>
+        <p class="form-messege"></p>
+    </div>
+</div>
