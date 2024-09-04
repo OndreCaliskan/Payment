@@ -7,7 +7,7 @@ namespace Payment.WebUI.ValidationRules.LoginValidationRules
     {
         public UserLoginValidator()
         {
-            RuleFor(x => x.Username).NotEmpty().WithMessage("Kullanıcı Adı Alanı Boş Geçilemez");
+            RuleFor(x => x.Email).NotEmpty().WithMessage("Email Alanı Boş Geçilemez");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Şifre Alanı Boş Geçilemez");
         }
     }

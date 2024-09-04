@@ -15,31 +15,76 @@
     <title>Login Paneli</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="~/adminweb/assets/images/favicon.png">
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="~/adminweb/css/style.css" rel="stylesheet">
+    <style>
+        .social-account-login-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
 
+            .social-account-login-buttons .social-login-button {
+                background-color: #fff;
+                font-size: 16px;
+                border-radius: 6px;
+                border: solid 1px #e6e6e6;
+                padding: 10px 15px;
+                align-items: center;
+                display: flex;
+                width: 48%;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+
+                .social-account-login-buttons .social-login-button:hover {
+                    transform: scale(1.05);
+                }
+
+            .social-account-login-buttons .social-login-icon {
+                margin-right: 10px;
+                width: 35px;
+                height: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                border-radius: 4px;
+            }
+
+                .social-account-login-buttons .social-login-icon.google {
+                    background-color: #f14236;
+                }
+
+                .social-account-login-buttons .social-login-icon.facebook {
+                    background-color: #4c6ea8;
+                }
+
+            .social-account-login-buttons .social-login-button small {
+                font-size: 14px;
+                color: #666666;
+            }
+
+        media (max-width: 768px) {
+            .social-account-login-buttons
+
+        {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-account-login-buttons .social-login-button {
+            width: 80%;
+            margin-bottom: 15px;
+        }
+
+        }
+    </style>
 </head>
 
 <body class="h-100">
-
-    <!--*******************
-        Preloader start
-    ********************-->
-    <div id="preloader">
-        <div class="loader">
-            <svg class="circular" viewBox="25 25 50 50">
-                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
-            </svg>
-        </div>
-    </div>
-    <!--*******************
-        Preloader end
-    ********************-->
-
-
-
-
-
     <div class="login-form-bg h-100">
         <div class="container h-100">
             <div class="row justify-content-center h-100">
@@ -47,12 +92,14 @@
                     <div class="form-input-content">
                         <div class="card login-form mb-0">
                             <div class="card-body pt-5">
-                                <a class="text-center" href="index.html"> <h4>Login Paneli</h4></a>
+                                <a class="text-center" href="index.html">
+                                    <h4>Login Paneli</h4>
+                                </a>
 
                                 <form class="mt-5 mb-5 login-input" method="post">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Kullanıcı Adınız" asp-for="Username">
-                                        <span asp-validation-for="Username" class="text-danger"></span>
+                                        <input type="text" class="form-control" placeholder="Email adresiniz" asp-for="Email">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control" placeholder="Şifreniz" asp-for="Password">
@@ -64,8 +111,12 @@
                                             @errorMessage
                                         </div>
                                     }
+                                    <div asp-validation-summary="ModelOnly" class="text-warning"></div>
                                     <button class="btn login-form__btn submit w-100">Giriş Yap</button>
                                 </form>
+
+                                <!-- Sosyal medya giriş butonları -->
+                                
                                 <p class="mt-5 login-form__footer">Bir Hesabın Yok mu? <a href="/Register/Index/" class="text-primary">Kayıt Ol</a></p>
                             </div>
                         </div>
@@ -75,12 +126,6 @@
         </div>
     </div>
 
-@* 
-    ////////////// *@
-
-    <!--**********************************
-        Scripts
-    ***********************************-->
     <script src="~/adminweb/plugins/common/common.min.js"></script>
     <script src="~/adminweb/js/custom.min.js"></script>
     <script src="~/adminweb/js/settings.js"></script>
