@@ -3,7 +3,6 @@ using Payment.DataAccessLayer.Abstract;
 using Payment.DataAccessLayer.Concrete;
 using Payment.DataAccessLayer.Repositories;
 using Payment.DtoLayer.Dtos.AddressDtos;
-using Payment.EntityLayer.Concrete;
 
 namespace Payment.DataAccessLayer.EntityFramework;
 

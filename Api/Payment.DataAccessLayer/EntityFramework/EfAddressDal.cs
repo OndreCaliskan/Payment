@@ -16,10 +16,10 @@ namespace Payment.DataAccessLayer.EntityFramework
         public List<AddressWithUsernameDto> AddressWithUsername()
         {
             var context= new Context();
-            //var values=context.Addresses.Include(x=>x.AppUser).Select(x=>new AddressWithUsernameDto
+            //var values = context.Addresses.Include(x => x.AppUser).Select(x => new AddressWithUsernameDto
             //{
             //    UserName = $"{x.AppUser.Name} {x.AppUser.Surname}",
-            //    AddressID=x.AddressID,
+            //    AddressID = x.AddressID,
             //    AddressLine = x.AddressLine,
             //    City = x.City,
             //    District = x.District,

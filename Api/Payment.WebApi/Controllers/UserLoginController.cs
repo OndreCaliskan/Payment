@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Payment.DtoLayer.Dtos.LoginDtos;
+using System.Security.Claims;
 
 namespace Payment.WebApi.Controllers
 {
@@ -23,22 +25,60 @@ namespace Payment.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await _userManager.FindByNameAsync(loginDto.Username);
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
-                return Unauthorized("No account found with this username.");
+                return Unauthorized("Email bulunamdı");
 
             var isLockedOut = await _userManager.IsLockedOutAsync(user);
             if (isLockedOut)
-                return Unauthorized("User account is locked out. Plase try again later.");
+                return Unauthorized("Hesap kitli. Lütfen sonra tekrar deneyiniz.");
 
             var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, lockoutOnFailure: true);
             if (result.Succeeded)
-                return Ok("User logged in successfully");
+                return Ok("Giriş başarılı");
 
             if (result.IsLockedOut)
-                return Unauthorized("Your account has been locked due to multiple failed login attempts. Please try again later.");
+                return Unauthorized("Birden fazla hatalı giriş. Hesabınız kilitlenmiştir.");
 
-            return Unauthorized("Invalid username or password.");
+            return Unauthorized("Şifre yanlış.");
+
+        }
+
+        [HttpGet("GoogleLogin")]
+        public IActionResult GoogleLogin(string returnUrl = "/")
+        {
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, returnUrl);
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet("GoogleResponse")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+                return RedirectToAction(nameof(UserLogin));
+
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (signInResult.Succeeded)
+                return Ok("Google ile giriş başarılı");
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email);
+            //var user = new AppUser { Email = email, UserName = email };
+
+            if (user == null)
+            {
+                user = new AppUser { Email = email, UserName = email };
+                var createResult = await _userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    return BadRequest("Kullanıcı oluşturulamadı");
+                }
+                await _userManager.AddLoginAsync(user, info);
+            }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return Ok("Google ile giriş ve kullanıcı kaydı başarılı");
 
         }
 
