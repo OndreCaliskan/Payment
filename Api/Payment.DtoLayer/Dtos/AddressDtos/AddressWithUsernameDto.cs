@@ -5,8 +5,7 @@
         public int AddressID { get; set; }
         public string AddressLine { get; set; }
         public string City { get; set; }
-        public string Country { get; set; }
-        public string PostalCode { get; set; }
+        public string District { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
         public string CreateUser { get; set; }

@@ -12,8 +12,8 @@ using Payment.DataAccessLayer.Concrete;
 namespace Payment.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240904093704_debug")]
-    partial class debug
+    [Migration("20240904124515_fixedAddressLast")]
+    partial class fixedAddressLast
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,10 +241,6 @@ namespace Payment.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
@@ -252,7 +248,7 @@ namespace Payment.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PostalCode")
+                    b.Property<string>("District")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -542,13 +538,11 @@ namespace Payment.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Address", b =>
                 {
-                    b.HasOne("AppUser", "AppUser")
+                    b.HasOne("AppUser", null)
                         .WithMany("Addresses")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Payment.EntityLayer.Concrete.Contact", b =>

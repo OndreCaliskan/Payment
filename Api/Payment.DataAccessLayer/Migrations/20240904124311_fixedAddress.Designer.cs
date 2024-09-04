@@ -12,8 +12,8 @@ using Payment.DataAccessLayer.Concrete;
 namespace Payment.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240904115740_fixedBugs")]
-    partial class fixedBugs
+    [Migration("20240904124311_fixedAddress")]
+    partial class fixedAddress
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,7 +263,7 @@ namespace Payment.DataAccessLayer.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("Payment.EntityLayer.Concrete.AppRole", b =>

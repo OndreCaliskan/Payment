@@ -73,8 +73,7 @@ namespace Payment.WebApi.Controllers
             address.AddressID = updateAddressDto.AddressID;
             address.AddressLine = updateAddressDto.AddressLine;
             address.City = updateAddressDto.City;
-            address.Country = updateAddressDto.Country;
-            address.PostalCode = updateAddressDto.PostalCode;
+            address.District = updateAddressDto.District;
             address.CreateTime = address.CreateTime;
             address.UpdateTime = DateTime.Parse(DateTime.Now.ToShortDateString());
             address.CreateUser = address.CreateUser;
