@@ -69,5 +69,15 @@ namespace Payment.BusinessLayer.Concrete
         {
             return _productDal.GetTopThreeProductsByRating();
         }
+
+        public IEnumerable<ProductDto> GetProducts(int page, int pageSize)
+        {
+            return _productDal.GetProducts(page, pageSize);
+        }
+
+        public int GetTotalProducts()
+        {
+           return _productDal.GetTotalProducts();
+        }
     }
 }

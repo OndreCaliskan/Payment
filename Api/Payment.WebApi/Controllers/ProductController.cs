@@ -35,5 +35,22 @@ namespace Payment.WebApi.Controllers
             var values = _productService.TGetTopThreeProductsByRating();
             return Ok(values);
         }
+        // Pagination ile ürünleri getirme
+        [HttpGet("GetProducts")]
+        public IActionResult GetProducts(int page = 1, int pageSize = 5)
+        {
+            var products = _productService.GetProducts(page, pageSize);
+            var totalProducts = _productService.GetTotalProducts();
+
+            var result = new
+            {
+                Products = products,
+                TotalProducts = totalProducts,
+                TotalPages = (int)Math.Ceiling((decimal)totalProducts / pageSize),
+                CurrentPage = page
+            };
+
+            return Ok(result);
+        }
     }
 }

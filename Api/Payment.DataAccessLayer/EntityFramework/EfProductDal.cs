@@ -14,9 +14,10 @@ namespace Payment.DataAccessLayer.EntityFramework
 {
     public class EfProductDal : GenericRepository<Product>, IProductDal
     {
+        private readonly Context _context;
         public EfProductDal(Context context) : base(context)
         {
-
+            _context = context;
         }
 
         public List<ProductDto> GetLast3Product()
@@ -41,6 +42,33 @@ namespace Payment.DataAccessLayer.EntityFramework
                 UpdateUser = y.UpdateUser
             }).ToList();
             return values;
+        }
+
+        public IEnumerable<ProductDto> GetProducts(int page, int pageSize)
+        {
+            return _context.Products
+             .OrderBy(p => p.ProductID)
+             .Skip((page - 1) * pageSize)
+             .Take(pageSize)
+             .Select(p => new ProductDto
+             {
+                 ProductID = p.ProductID,
+                 CategoryName = p.Category.Name,
+                 CategoryId = p.Category.Id,
+                 Title = p.Title,
+                 Description = p.Description,
+                 Price = p.Price,
+                 DiscountRate = p.DiscountRate,
+                 Stock = p.Stock,
+                 CoverImage = p.CoverImage,
+                 Rating = p.Rating,
+                 IsActive = p.IsActive,
+                 CreateTime = p.CreateTime,
+                 UpdateTime = p.UpdateTime,
+                 CreateUser = p.CreateUser,
+                 UpdateUser = p.UpdateUser
+             })
+             .ToList();
         }
 
         public List<ProductDto> GetProductWithCategoryName()
@@ -115,6 +143,11 @@ namespace Payment.DataAccessLayer.EntityFramework
                 UpdateUser = y.UpdateUser
             }).ToList();
             return values;
+        }
+
+        public int GetTotalProducts()
+        {
+            return _context.Products.Count();
         }
 
         public string ProductIsActiveChange(int id)

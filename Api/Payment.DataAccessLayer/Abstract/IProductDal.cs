@@ -11,5 +11,8 @@ namespace Payment.DataAccessLayer.Abstract
         List<ProductDto> GetLast3Product();
         ProductDto GetProductWithCategoryNameById(int id);
         List<ProductDto> GetTopThreeProductsByRating();
+
+        IEnumerable<ProductDto> GetProducts(int page, int pageSize);
+        int GetTotalProducts();
     }
 }

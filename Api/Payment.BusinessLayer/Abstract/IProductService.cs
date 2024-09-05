@@ -16,5 +16,7 @@ namespace Payment.BusinessLayer.Abstract
         List<ProductDto> TGetLast3Product();
         ProductDto TGetProductWithCategoryNameById(int id);
         List<ProductDto> TGetTopThreeProductsByRating();
+        IEnumerable<ProductDto> GetProducts(int page, int pageSize);
+        int GetTotalProducts();
     }
 }

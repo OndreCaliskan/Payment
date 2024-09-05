@@ -1,9 +1,8 @@
-﻿@model List<ResultProductDto>
+﻿@model ProductListViewModel
 @{
     ViewData["Title"] = "Ürünler";
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
     int count = 0;
-    
 }
 
 <div class="card">
@@ -26,59 +25,65 @@
                         <th>Ekleyen Kullanıcı</th>
                         <th>Güncelleme Tarihi</th>
                         <th>Güncelleyen Kullanıcı</th>
+                        <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Products)
                     {
                         count++;
-                  
                         <tr>
                             <th>@count</th>
                             <td>
                                 <img src="@item.CoverImage" class="rounded-circle mr-3" alt="" width="50px" height="50px" style="object-fit: cover;">
                             </td>
-
                             <td>@item.Title</td>
-                            <td>@ViewBag.CategoryName[item.CategoryId]</td>
+                            <td>@item.CategoryName</td>
                             <td>@item.Description</td>
                             <td>@item.Price</td>
                             <td>@item.DiscountRate</td>
                             <td>@item.Stock</td>
-                            <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
+                            <td>@(item.IsActive.HasValue && item.IsActive.Value ? "Aktif" : "Pasif")</td>
+                           @*  <td>@(item.IsActive ? "Aktif" : "Pasif")</td>  *@
                             <td>@item.CreateTime</td>
                             <td>@item.CreateUser</td>
                             <td>@item.UpdateTime</td>
                             <td>@item.UpdateUser</td>
-                            <td><a href="/AdminProduct/DeleteProduct/@item.ProductID" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
-                            <td><a href="/AdminProduct/UpdateProduct/@item.ProductID" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
-                            <td><a href="/AdminProduct/IsActiveApproved/@item.ProductID" class="btn btn-outline-primary">Aktif</a></td>
-                            <td><a href="/AdminProduct/IsActiveApprovedCancel/@item.ProductID" class="btn btn-outline-danger">Pasif</a></td>
-
+                            <td>
+                                <a href="/AdminProduct/DeleteProduct/@item.ProductID" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a>
+                                <a href="/AdminProduct/UpdateProduct/@item.ProductID" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a>
+                                <a href="/AdminProduct/IsActiveApproved/@item.ProductID" class="btn btn-outline-primary">Aktif</a>
+                                <a href="/AdminProduct/IsActiveApprovedCancel/@item.ProductID" class="btn btn-outline-danger">Pasif</a>
+                            </td>
                         </tr>
                     }
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Resim</th>
-                        <th>Ürün İsmi</th>
-                        <th>Kategori</th>
-                        <th>Açıklama</th>
-                        <th>Ücret</th>
-                        <th>İndirim Oranı</th>
-                        <th>Stok Adeti</th>
-                        <th>Aktif Mi?</th>
-                        <th>Eklenme Tarihi</th>
-                        <th>Ekleyen Kullanıcı</th>
-                        <th>Güncelleme Tarihi</th>
-                        <th>Güncelleyen Kullanıcı</th>
-                    </tr>
-                </tfoot>
             </table>
         </div>
     </div>
-
 </div>
-<a href="/AdminProduct/AddProduct/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Ürün Girişi</a>
 
+<!-- Sayfa Kontrolleri -->
+<nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (Model.PagingInfo.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PagingInfo.CurrentPage - 1)">Önceki</a>
+                </li>
+            }
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+            @if (Model.PagingInfo.CurrentPage < Model.PagingInfo.TotalPages)
+            {
+                <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.PagingInfo.CurrentPage + 1)">Sonraki</a>
+                </li>
+            }
+        </ul>
+    </nav>
+<a href="/AdminProduct/AddProduct/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Ürün Girişi</a>

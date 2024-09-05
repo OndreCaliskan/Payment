@@ -29,11 +29,12 @@ namespace Payment.WebUI.Controllers
             _productService = productService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 5)
         {
             var client = _httpClientFactory.CreateClient();
+
             var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
-             if (responseMessage2.IsSuccessStatusCode)
+            if (responseMessage2.IsSuccessStatusCode)
             {
                 var user = await responseMessage2.Content.ReadFromJsonAsync<AppUser>();
                 TempData["UserName"] = user.Name;
@@ -41,19 +42,27 @@ namespace Payment.WebUI.Controllers
                 using (var context = new Context())
                 {
                     ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
-
                 }
-                var responseMessage = await client.GetAsync("https://localhost:7066/api/AdminProduct");
-                if (responseMessage.IsSuccessStatusCode)
+
+                var products = _productService.GetProducts(page, pageSize); // await yok
+                var totalProducts = _productService.GetTotalProducts();
+
+                var result = new ProductListViewModel
                 {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
-                    return View(values);
-                }
-                return View();
-            }
-            return RedirectToAction("Index", "Login");
+                    Products = products.ToList(), // `ToList` çağrısı ile tür uyumunu sağlama
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        TotalItems = totalProducts,
+                        ItemsPerPage = pageSize,
+                        TotalPages = (int)Math.Ceiling((decimal)totalProducts / pageSize)
+                    }
+                };
 
+                return View(result);
+            }
+
+            return RedirectToAction("Index", "Login");
         }
         [HttpGet]
         public IActionResult AddProduct()
