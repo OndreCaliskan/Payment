@@ -1,5 +1,6 @@
 ﻿using Payment.BusinessLayer.Abstract;
 using Payment.DataAccessLayer.Abstract;
+using Payment.DtoLayer.Dtos.CategoryDtos;
 using Payment.EntityLayer.Concrete;
 
 namespace Payment.BusinessLayer.Concrete
@@ -46,6 +47,16 @@ namespace Payment.BusinessLayer.Concrete
         public void TUpdate(Category t)
         {
             _categoryDal.Update(t);
+        }
+
+        public IEnumerable<CategoryDto> GetCategories(int page, int pageSize)
+        {
+            return _categoryDal.GetCategories(page, pageSize);
+        }
+
+        public int GetTotalCategories()
+        {
+            return _categoryDal.GetTotalCategories();
         }
     }
 }

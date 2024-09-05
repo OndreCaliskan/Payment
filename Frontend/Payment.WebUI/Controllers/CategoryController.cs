@@ -1,38 +1,63 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Payment.WebUI.DTOs.CategoryDtos;
+using Payment.WebUI.DTOs.CategoryDtos; // `CategoryDto` için gerekli namespace
 using Payment.WebUI.Helpers;
+using Payment.WebUI.Models;
 using System.Text;
+
+using Microsoft.EntityFrameworkCore;
+using Payment.DataAccessLayer.Concrete;
+using Payment.BusinessLayer.Abstract; // DbContext için gerekli namespace
 
 namespace Payment.WebUI.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICategoryService _categoryService;
+        
 
-        public CategoryController(IHttpClientFactory httpClientFactory)
+
+        public CategoryController(IHttpClientFactory httpClientFactory,ICategoryService categoryService) 
         {
             _httpClientFactory = httpClientFactory;
+            _categoryService = categoryService;
+           
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 5)
         {
             var client = _httpClientFactory.CreateClient();
+
             var responseMessage2 = await client.GetAsync("https://localhost:7066/api/User/");
             if (responseMessage2.IsSuccessStatusCode)
             {
                 var user = await responseMessage2.Content.ReadFromJsonAsync<AppUser>();
                 TempData["UserName"] = user.Name;
 
-                var responseMessage = await client.GetAsync("https://localhost:7066/api/Category");
-                if (responseMessage.IsSuccessStatusCode)
+                using (var context = new Context())
                 {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
-                    return View(values);
+                    ViewBag.CategoryName = context.Categories.ToDictionary(c => c.Id, c => c.Name);
                 }
-                return View();
+
+                var categories = _categoryService.GetCategories(page, pageSize); // await yok
+                var totalCategories = _categoryService.GetTotalCategories();
+
+                var result = new CategoryListViewModel
+                {
+                    Categories = categories.ToList(), // `ToList` çağrısı ile tür uyumunu sağlama
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        TotalItems = totalCategories,
+                        ItemsPerPage = pageSize,
+                        TotalPages = (int)Math.Ceiling((decimal)totalCategories / pageSize)
+                    }
+                };
+
+                return View(result);
             }
+
             return RedirectToAction("Index", "Login");
         }
 

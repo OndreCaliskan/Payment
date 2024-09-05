@@ -1,4 +1,6 @@
-﻿using Payment.EntityLayer.Concrete;
+﻿using Payment.DtoLayer.Dtos.CategoryDtos;
+using Payment.DtoLayer.Dtos.ProductDtos;
+using Payment.EntityLayer.Concrete;
 
 namespace Payment.DataAccessLayer.Abstract
 {
@@ -6,5 +8,8 @@ namespace Payment.DataAccessLayer.Abstract
     {
         string CategoryIsActiveChange(int id);
         string CategoryIsActiveChangeCancel(int id);
+
+        IEnumerable<CategoryDto> GetCategories(int page, int pageSize);
+        int GetTotalCategories();
     }
 }

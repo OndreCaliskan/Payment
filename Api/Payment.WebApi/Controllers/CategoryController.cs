@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Payment.BusinessLayer.Abstract;
+using Payment.DtoLayer.Dtos.CategoryDtos;
 using Payment.EntityLayer.Concrete;
 
 namespace Payment.WebApi.Controllers
@@ -61,6 +62,22 @@ namespace Payment.WebApi.Controllers
             var value = _categoryService.TGetByID(id);
             _categoryService.TDelete(value);
             return Ok("Category deleted.");
+        }
+        [HttpGet("GetCategories")]
+        public IActionResult GetCategories(int page = 1, int pageSize = 5)
+        {
+            var categories = _categoryService.GetCategories(page, pageSize);
+            var totalCategories = _categoryService.GetTotalCategories();
+
+            var result = new
+            {
+                Categories = categories,
+                TotalCategories = totalCategories,
+                TotalPages = (int)Math.Ceiling((decimal)totalCategories / pageSize),
+                CurrentPage = page
+            };
+
+            return Ok(result);
         }
     }
 }

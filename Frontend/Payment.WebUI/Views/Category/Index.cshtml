@@ -1,4 +1,4 @@
-﻿@model List<ResultCategoryDto>
+﻿@model CategoryListViewModel
 @{
     ViewData["Title"] = "Kategoriler";
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
@@ -24,11 +24,14 @@
                                     <th>Aktif Mi</th>
                                     <th>Ekleyen Kullanıcı</th>
                                     <th>Güncelleyen Kullanıcı</th>
-   
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                    <th>Aktif</th>
+                                    <th>Pasif</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.Categories)
                                 {
                                     count++;
                                     <tr>
@@ -36,18 +39,17 @@
                                         <td>
                                             <img src="@item.ImagePath" class="rounded-circle mr-3" alt="" width="50px" height="50px" style="object-fit: cover;">
                                         </td>
-                                        <td>@item.Name </td>
-                                        <td>@item.Description </td>
-                                        <td>@item.CreateTime </td>
-                                        <td>@item.UpdateTime </td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Description</td>
+                                        <td>@item.CreateTime</td>
+                                        <td>@item.UpdateTime</td>
                                         <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
-                                        <td>@item.CreateUser </td>
-                                        <td>@item.UpdateUser </td>
+                                        <td>@item.CreateUser</td>
+                                        <td>@item.UpdateUser</td>
                                         <td><a href="/Category/DeleteCategory/@item.Id" class="btn mb-1 btn-rounded btn-outline-danger">Sil</a></td>
                                         <td><a href="/Category/UpdateCategory/@item.Id" class="btn mb-1 btn-rounded btn-outline-success">Güncelle</a></td>
                                         <td><a href="/Category/IsActiveApproved/@item.Id" class="btn btn-outline-primary">Aktif</a></td>
                                         <td><a href="/Category/IsActiveApprovedCancel/@item.Id" class="btn btn-outline-danger">Pasif</a></td>
-
                                     </tr>
                                 }
                             </tbody>
@@ -63,17 +65,39 @@
                                     <th>Ekleyen Kullanıcı</th>
                                     <th>Güncelleyen Kullanıcı</th>
                                     <th>Sil</th>
-                                    <th>Güncele</th>
+                                    <th>Güncelle</th>
+                                    <th>Aktif</th>
+                                    <th>Pasif</th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
-                </div>
 
+                    <!-- Pagination -->
+                    <ul class="pagination">
+                        @if (Model.PagingInfo.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(Model.PagingInfo.CurrentPage - 1)">Önceki</a>
+                            </li>
+                        }
+                        @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                            </li>
+                        }
+                        @if (Model.PagingInfo.CurrentPage < Model.PagingInfo.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(Model.PagingInfo.CurrentPage + 1)">Sonraki</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
             <a href="/Category/AddCategory/" class="btn mb-1 btn-rounded btn-outline-info">Yeni Kategori Girişi</a>
         </div>
     </div>
 </div>
 <!-- #/ container -->
-</div>
